@@ -1,7 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsNumber, IsOptional } from 'class-validator';
 
-export class ConnectionArgsDto {
+export class ConnectionArgs {
   @IsOptional()
   @IsNumber()
   @ApiProperty({ required: false })

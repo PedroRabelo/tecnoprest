@@ -1,4 +1,4 @@
 export class Edge<Record> {
-  node: Record;
   cursor: string;
+  node: Record;
 }
