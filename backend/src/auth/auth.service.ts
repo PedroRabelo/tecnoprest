@@ -1,37 +1,51 @@
-import { Auth } from './entity/auth.entity';
+import { Injectable } from '@nestjs/common';
+import { UserService } from 'src/user/user.service';
 import { PrismaService } from './../prisma/prisma.service';
-import {
-  Injectable,
-  NotFoundException,
-  UnauthorizedException,
-} from '@nestjs/common';
+import * as bcrypt from 'bcrypt';
+import { UnauthorizedError } from './errors/unauthorized.error';
+import { UserEntity } from 'src/user/entities/user.entity';
+import { UserPayload } from './models/user-payload';
 import { JwtService } from '@nestjs/jwt';
+import { UserToken } from './models/user-token';
 
 @Injectable()
 export class AuthService {
-  constructor(private prisma: PrismaService, private jwtService: JwtService) {}
+  constructor(
+    private prisma: PrismaService,
+    private readonly userService: UserService,
+    private readonly jwtService: JwtService,
+  ) {}
 
-  async login(email: string, password: string): Promise<Auth> {
-    const user = await this.prisma.user.findUnique({ where: { email: email } });
+  login(user: UserEntity): UserToken {
+    const payload: UserPayload = {
+      sub: user.id,
+      email: user.email,
+      name: user.name,
+    };
 
-    if (!user) {
-      throw new NotFoundException(`No user found for email: ${email}`);
-    }
-
-    // TODO use a library like bcrypt to hash and compare your passwords
-    // https://github.com/kelektiv/node.bcrypt.js#readme
-    const passwordValid = user.password === password;
-
-    if (!passwordValid) {
-      throw new UnauthorizedException('Invalid password');
-    }
+    const jwtToken = this.jwtService.sign(payload);
 
     return {
-      accessToken: this.jwtService.sign({ userId: user.id }),
+      access_token: jwtToken,
     };
   }
 
-  validateUser(userId: string) {
-    return this.prisma.user.findUnique({ where: { id: userId } });
+  async validateUser(email: string, password: string) {
+    const user = await this.userService.findByEmail(email);
+
+    if (user) {
+      const isPasswordValid = await bcrypt.compare(password, user.password);
+
+      if (isPasswordValid) {
+        return {
+          ...user,
+          password: undefined,
+        };
+      }
+    }
+
+    throw new UnauthorizedError(
+      'Email address or password provided is incorrect.',
+    );
   }
 }

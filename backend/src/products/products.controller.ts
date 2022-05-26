@@ -1,20 +1,13 @@
-import { JwtAuthGuard } from './../auth/jwt-auth.guard';
-import { Page } from '../page/page.dto';
 import {
-  Controller,
-  Get,
-  Post,
   Body,
-  Patch,
-  Param,
+  Controller,
   Delete,
+  Get,
+  Param,
+  Patch,
+  Post,
   Query,
-  UseGuards,
 } from '@nestjs/common';
-import { ProductsService } from './products.service';
-import { CreateProductDto } from './dto/create-product.dto';
-import { UpdateProductDto } from './dto/update-product.dto';
-import { ProductEntity } from './entities/product.entity';
 import {
   ApiBearerAuth,
   ApiCreatedResponse,
@@ -24,6 +17,11 @@ import {
 } from '@nestjs/swagger';
 import { ApiPageResponse } from 'src/page/api-page-response.decorator';
 import { ConnectionArgs } from 'src/page/connection-args.dto';
+import { Page } from '../page/page.dto';
+import { CreateProductDto } from './dto/create-product.dto';
+import { UpdateProductDto } from './dto/update-product.dto';
+import { ProductEntity } from './entities/product.entity';
+import { ProductsService } from './products.service';
 
 @Controller('products')
 @ApiTags('products')
@@ -32,7 +30,6 @@ export class ProductsController {
   constructor(private readonly productsService: ProductsService) {}
 
   @Post()
-  @UseGuards(JwtAuthGuard)
   @ApiBearerAuth()
   @ApiCreatedResponse({ type: ProductEntity })
   async create(@Body() createProductDto: CreateProductDto) {
@@ -49,7 +46,6 @@ export class ProductsController {
   }
 
   @Get('drafts')
-  @UseGuards(JwtAuthGuard)
   @ApiBearerAuth()
   @ApiCreatedResponse({ type: [ProductEntity] })
   async findDrafts() {
@@ -70,7 +66,6 @@ export class ProductsController {
   }
 
   @Patch(':id')
-  @UseGuards(JwtAuthGuard)
   @ApiBearerAuth()
   @ApiCreatedResponse({ type: ProductEntity })
   async update(
@@ -83,7 +78,6 @@ export class ProductsController {
   }
 
   @Delete(':id')
-  @UseGuards(JwtAuthGuard)
   @ApiBearerAuth()
   @ApiOkResponse({ type: ProductEntity })
   async remove(@Param('id') id: string) {
