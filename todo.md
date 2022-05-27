@@ -2,7 +2,7 @@
 
 ## FRONT-END
 
-[] Configurar Projeto nextjs + tailwind
+[x] Configurar Projeto nextjs + tailwind
 [] Montar estrutura de layouts (tenant, admin)
 [] Implementar layout menu do tenant(empresa, motoristas, veículos, manutenção, controle de rota, rastreamento)
 [] Implementar layout menu admin (clientes, usuários, cadastros...)
