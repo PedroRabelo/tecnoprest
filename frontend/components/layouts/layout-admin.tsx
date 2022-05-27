@@ -17,7 +17,7 @@ const navigation = [
   { name: "Dashboard", href: "/admin", icon: HomeIcon, current: true },
   {
     name: "Clientes",
-    href: "/admin/clientes",
+    href: "/admin/clients",
     icon: UsersIcon,
     current: false,
   },
