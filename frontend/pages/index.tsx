@@ -1,3 +1,21 @@
+import Link from "next/link";
+import { Seo } from "../components";
+
 export default function Home() {
-  return <h1 className="text-3xl font-bold underline">Hello world!</h1>;
+  return (
+    <div>
+      <ul>
+        <li>
+          <Link href="/admin">
+            <a>Acesso Tecnoprest</a>
+          </Link>
+        </li>
+        <li>
+          <Link href="/cliente">
+            <a>Acesso Clientes</a>
+          </Link>
+        </li>
+      </ul>
+    </div>
+  );
 }
