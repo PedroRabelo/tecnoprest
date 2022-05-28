@@ -2,8 +2,8 @@ import { Dialog, Menu, Transition } from "@headlessui/react";
 import {
   BellIcon,
   ChartBarIcon,
-  FolderIcon,
   HomeIcon,
+  IdentificationIcon,
   MenuAlt2Icon,
   UsersIcon,
   XIcon,
@@ -21,7 +21,7 @@ const navigation = [
     icon: UsersIcon,
     current: false,
   },
-  { name: "Usuários", href: "#", icon: FolderIcon, current: false },
+  { name: "Usuários", href: "#", icon: IdentificationIcon, current: false },
   { name: "Relatórios", href: "#", icon: ChartBarIcon, current: false },
 ];
 const userNavigation = [
