@@ -1,3 +1,6 @@
+import Link from "next/link";
+import { Pagination } from "../../../components";
+
 const clients = [
   {
     name: "Mercado Livre",
@@ -21,12 +24,14 @@ export function Clients() {
           <h1 className="text-xl font-semibold text-gray-900">Clientes</h1>
         </div>
         <div className="mt-4 sm:mt-0 sm:ml-16 sm:flex-none">
-          <button
-            type="button"
-            className="inline-flex items-center justify-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 sm:w-auto"
-          >
-            Novo cliente
-          </button>
+          <Link href="/admin/clients/create">
+            <button
+              type="button"
+              className="inline-flex items-center justify-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 sm:w-auto"
+            >
+              Novo cliente
+            </button>
+          </Link>
         </div>
       </div>
       <div className="mt-8 flex flex-col">
@@ -91,13 +96,14 @@ export function Clients() {
                           href="#"
                           className="text-indigo-600 hover:text-indigo-900"
                         >
-                          Edit<span className="sr-only">, {person.name}</span>
+                          Editar<span className="sr-only">, {person.name}</span>
                         </a>
                       </td>
                     </tr>
                   ))}
                 </tbody>
               </table>
+              <Pagination />
             </div>
           </div>
         </div>
