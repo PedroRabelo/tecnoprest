@@ -1,12 +1,12 @@
-import { InputForm } from "../../../components";
+import { Button, InputForm } from "../../../components";
 
 export function CreateClient() {
   return (
     <>
       <div className="pb-5 ">
-        <h3 className="text-lg leading-6 font-medium text-gray-900">
+        <h2 className="text-xl leading-6 font-bold text-gray-900">
           Cadastrar Cliente
-        </h3>
+        </h2>
       </div>
       <div className="space-y-6">
         <div className="bg-white shadow px-4 py-5 sm:rounded-lg sm:p-6">
@@ -191,19 +191,9 @@ export function CreateClient() {
           </div>
         </div>
 
-        <div className="flex justify-end">
-          <button
-            type="button"
-            className="bg-white py-2 px-4 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-          >
-            Voltar
-          </button>
-          <button
-            type="submit"
-            className="ml-3 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-          >
-            Salvar
-          </button>
+        <div className="flex justify-end gap-4">
+          <Button title="Voltar" style="secondary" type="button" />
+          <Button title="Salvar" style="primary" type="submit" />
         </div>
       </div>
     </>

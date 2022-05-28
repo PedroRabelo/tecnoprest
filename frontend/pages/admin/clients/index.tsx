@@ -1,5 +1,6 @@
+import { MailIcon, UserAddIcon } from "@heroicons/react/solid";
 import Link from "next/link";
-import { Pagination } from "../../../components";
+import { Button, Pagination } from "../../../components";
 
 const clients = [
   {
@@ -25,12 +26,14 @@ export function Clients() {
         </div>
         <div className="mt-4 sm:mt-0 sm:ml-16 sm:flex-none">
           <Link href="/admin/clients/create">
-            <button
-              type="button"
-              className="inline-flex items-center justify-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 sm:w-auto"
-            >
-              Novo cliente
-            </button>
+            <a>
+              <Button
+                type="button"
+                title="Novo Cliente"
+                icon={UserAddIcon}
+                style="primary"
+              />
+            </a>
           </Link>
         </div>
       </div>
