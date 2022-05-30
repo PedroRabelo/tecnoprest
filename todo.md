@@ -1,8 +1,8 @@
 ## BACK-END
 
-[] Mapear entidades Tenant, User
-[] CRUD do Tenant
-[] CRUD User
+[x] Mapear entidades Tenant, User
+[x] CRUD do Tenant
+[x] CRUD User
 
 ## FRONT-END
 
