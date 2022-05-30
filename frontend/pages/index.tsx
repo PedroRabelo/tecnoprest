@@ -15,6 +15,11 @@ export default function Home() {
             <a>Acesso Clientes</a>
           </Link>
         </li>
+        <li>
+          <Link href="/login">
+            <a>Login</a>
+          </Link>
+        </li>
       </ul>
     </div>
   );
