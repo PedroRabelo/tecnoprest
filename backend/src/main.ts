@@ -26,14 +26,14 @@ async function bootstrap() {
   app.useGlobalFilters(new PrismaClientExceptionFilter(httpAdapter));
 
   const config = new DocumentBuilder()
-    .setTitle('Prisma Day - NestJS Prisma Workshop')
-    .setDescription('Building a REST API with NestJS and Prisma')
+    .setTitle('TecnoPrest - Management')
+    .setDescription('REST API sistema de gestão de frota')
     .setVersion('1.0')
     .addBearerAuth()
     .build();
   const document = SwaggerModule.createDocument(app, config);
-  SwaggerModule.setup('api', app, document, { customSiteTitle: 'Prisma Day' });
+  SwaggerModule.setup('api', app, document, { customSiteTitle: 'Management' });
 
-  await app.listen(3000);
+  await app.listen(3333);
 }
 bootstrap();

@@ -10,24 +10,45 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Product {
-  id        String   @id @default(cuid())
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  name        String
-  description String?
-  price       Decimal
-  sku         String  @unique
-  published   Boolean @default(false)
-}
-
 model User {
-  id        String   @id @default(cuid())
+  id        String   @id @default(uuid())
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  ativo     Boolean  @default(false)
 
   name     String?
   email    String  @unique
   password String
+  role     Role    @default(USER)
+
+  @@map("users")
+}
+
+model Tenant {
+  id        String   @id @default(uuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  ativo     Boolean  @default(true)
+
+  slug          String
+  logoUrl       String?
+  cnpj          String  @unique
+  name          String
+  email         String
+  contactName   String
+  contactNumber String
+  postalCode    String
+  streetAddress String
+  city          String
+  state         String
+  country       String
+
+  @@map("tenants")
+}
+
+enum Role {
+  USER
+  ADMIN
+  ADMIN_TENANT
+  USER_TENANT
 }
