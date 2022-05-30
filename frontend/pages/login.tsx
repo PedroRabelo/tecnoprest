@@ -1,10 +1,8 @@
 import { LockClosedIcon } from "@heroicons/react/solid";
-import { SubmitHandler, useForm } from "react-hook-form";
-import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useContext, useState } from "react";
-
-import { withSSRGuest } from "../utils/withSSRGuest";
+import { SubmitHandler, useForm } from "react-hook-form";
+import * as yup from "yup";
 import { AuthContext } from "../contexts/auth-context";
 
 type SignInFormData = {
@@ -132,9 +130,3 @@ export default function Login() {
     </>
   );
 }
-
-export const getServerSideProps = withSSRGuest(async (ctx) => {
-  return {
-    props: {},
-  };
-});

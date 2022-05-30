@@ -59,9 +59,9 @@ export function AuthProvider({ children }: AuthProviderProps) {
     try {
       const response = await api.post("login", { email, password });
 
-      const { token, userData } = response.data;
+      const { access_token, userData } = response.data;
 
-      setCookie(undefined, "tecnoprest.token", token, {
+      setCookie(undefined, "tecnoprest.token", access_token, {
         maxAge: 60 * 60 * 24 * 30, // 30 dias
         path: "/",
       });
@@ -75,7 +75,10 @@ export function AuthProvider({ children }: AuthProviderProps) {
 
       if (userData.role === "ADMIN" || userData.role === "USER") {
         await Router.push("/admin");
-      } else if (userData.role === "TENANT") {
+      } else if (
+        userData.role === "ADMIN_TENANT" ||
+        userData.role === "USER_TENANT"
+      ) {
         await Router.push("/[tenant]");
       } else {
         await Router.push("/");
