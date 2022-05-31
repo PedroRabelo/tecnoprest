@@ -1,6 +1,7 @@
-import { MailIcon, UserAddIcon } from "@heroicons/react/solid";
+import { UserAddIcon } from "@heroicons/react/solid";
 import Link from "next/link";
 import { Button, Pagination } from "../../../components";
+import useTenant, { Tenant } from "../../../hooks/useTenant";
 
 const clients = [
   {
@@ -12,12 +13,21 @@ const clients = [
   {
     name: "Klabin",
     cnpj: "11.222.333/0001-11",
-    email: "lindsay.walton@example.com",
+    email: "klabin@example.com",
     status: "Ativo",
   },
 ];
 
 export function Clients() {
+  const { tenants, pageInfo, totalCount, isLoading, isError } = useTenant();
+
+  if (isLoading) {
+    console.log(isLoading);
+    return <div>loading</div>;
+  }
+
+  console.log(tenants);
+
   return (
     <div className="px-4 sm:px-6 lg:px-8">
       <div className="sm:flex sm:items-center">
@@ -77,29 +87,29 @@ export function Clients() {
                   </tr>
                 </thead>
                 <tbody className="bg-white">
-                  {clients.map((person, personIdx) => (
+                  {tenants.map((tenant: Tenant, index: number) => (
                     <tr
-                      key={person.email}
-                      className={personIdx % 2 === 0 ? undefined : "bg-gray-50"}
+                      key={tenant.email}
+                      className={index % 2 === 0 ? undefined : "bg-gray-50"}
                     >
                       <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6">
-                        {person.name}
+                        {tenant.name}
                       </td>
                       <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                        {person.cnpj}
+                        {tenant.cnpj}
                       </td>
                       <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                        {person.email}
+                        {tenant.email}
                       </td>
                       <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                        {person.status}
+                        {tenant.ativo}
                       </td>
                       <td className="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6">
                         <a
                           href="#"
                           className="text-indigo-600 hover:text-indigo-900"
                         >
-                          Editar<span className="sr-only">, {person.name}</span>
+                          Editar<span className="sr-only">{tenant.name}</span>
                         </a>
                       </td>
                     </tr>
