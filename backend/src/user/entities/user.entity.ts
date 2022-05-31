@@ -9,4 +9,6 @@ export class UserEntity implements User {
   password: string;
   name: string;
   role: Role;
+  assignedBy: string;
+  tenantId: string;
 }
