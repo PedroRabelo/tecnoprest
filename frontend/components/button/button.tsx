@@ -14,7 +14,7 @@ function classNames(...classes: string[]) {
 export function Button({ ...props }: Props) {
   return (
     <button
-      type="button"
+      type={props.type}
       className={classNames(
         props.style === "primary"
           ? "focus:ring-indigo-500 text-white bg-indigo-600 hover:bg-indigo-700"

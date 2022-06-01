@@ -36,12 +36,11 @@ const fetcher = (url: string) => api.get(url).then((res) => res.data);
 
 export default function useTenant() {
   const { data, error } = useSWR("tenants/page", fetcher);
-  // const response: TenantPagedResponse = await api.get("tenants/page");
 
   return {
-    tenants: data.nodes,
-    pageInfo: data.pageInfo,
-    totalCount: data.totalCount,
+    tenants: data?.nodes,
+    pageInfo: data?.pageInfo,
+    totalCount: data?.totalCount,
     isLoading: !error && !data,
     isError: error,
   };

@@ -1,3 +1,5 @@
+type Props = {};
+
 export function Pagination() {
   return (
     <nav

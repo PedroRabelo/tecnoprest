@@ -1,7 +1,12 @@
 import "../styles/globals.css";
 import type { AppProps } from "next/app";
 import { useRouter } from "next/router";
-import { LayoutAdmin, LayoutPublic, LayoutTenant, Seo } from "../components";
+import {
+  LayoutAdmin,
+  LayoutPublic,
+  LayoutTenant,
+  PageHead,
+} from "../components";
 import { AuthProvider } from "../contexts/auth-context";
 
 function MyApp({ Component, pageProps }: AppProps) {
@@ -21,7 +26,7 @@ function MyApp({ Component, pageProps }: AppProps) {
   return (
     <AuthProvider>
       <Layout>
-        <Seo
+        <PageHead
           title="TecnoPrest Management"
           description="Tecnoprest Management"
         />

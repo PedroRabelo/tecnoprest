@@ -22,11 +22,8 @@ export function Clients() {
   const { tenants, pageInfo, totalCount, isLoading, isError } = useTenant();
 
   if (isLoading) {
-    console.log(isLoading);
     return <div>loading</div>;
   }
-
-  console.log(tenants);
 
   return (
     <div className="px-4 sm:px-6 lg:px-8">
@@ -35,7 +32,7 @@ export function Clients() {
           <h1 className="text-xl font-semibold text-gray-900">Clientes</h1>
         </div>
         <div className="mt-4 sm:mt-0 sm:ml-16 sm:flex-none">
-          <Link href="/admin/clients/create">
+          <Link href="/admin/clients/create" passHref>
             <a>
               <Button
                 type="button"
