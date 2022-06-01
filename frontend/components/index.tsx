@@ -1,4 +1,4 @@
-export * from "./seo";
+export * from "./page-head";
 export * from "./layouts";
 export * from "./link-menu";
 export * from "./pagination";

@@ -1,5 +1,4 @@
 import Link from "next/link";
-import { Seo } from "../components";
 
 export default function Home() {
   return (

@@ -5,7 +5,7 @@ interface Props {
   description?: string;
 }
 
-export function Seo({ title, description }: Props) {
+export function PageHead({ title, description }: Props) {
   return (
     <Head>
       <title>{title}</title>
