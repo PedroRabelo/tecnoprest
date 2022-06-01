@@ -1,14 +1,16 @@
+import { ErrorMessage } from "@hookform/error-message";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { SubmitHandler, useForm } from "react-hook-form";
+import classNames from "classnames";
+import { useState } from "react";
+import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import * as yup from "yup";
 import {
   Button,
   FormErrorMessage,
   FormInput,
+  FormInputMask,
   SelectInput,
 } from "../../../components";
-import { ErrorMessage } from "@hookform/error-message";
-import classNames from "classnames";
 
 type NewClientForm = {
   slug: string;
@@ -49,12 +51,15 @@ export function CreateClient() {
   const {
     register,
     handleSubmit,
+    control,
     formState: { errors },
   } = useForm<NewClientForm>({
     resolver: yupResolver(clientSchema),
   });
 
-  const onSubmit: SubmitHandler<NewClientForm> = (data) => console.log(data);
+  const onSubmit: SubmitHandler<NewClientForm> = (data) => {
+    console.log(data);
+  };
 
   return (
     <>
@@ -168,17 +173,23 @@ export function CreateClient() {
               <div className="grid grid-cols-6 gap-6">
                 <div className="col-span-6 sm:col-span-3">
                   <label className="block text-sm font-medium text-gray-700">
-                    CNPJ
+                    CNPJ Mask
                   </label>
-                  <FormInput<NewClientForm>
-                    id="cnpj"
-                    type="text"
+                  <Controller
+                    control={control}
                     name="cnpj"
-                    label="CNPJ"
-                    placeholder="00.111.222/0001-11"
-                    className="mb-2"
-                    register={register}
-                    errors={errors}
+                    render={({ field }) => (
+                      <FormInputMask<NewClientForm>
+                        id="cnpj"
+                        type="text"
+                        name="cnpj"
+                        className="mb-2"
+                        options={{ date: true, datePattern: ["m", "d"] }}
+                        // register={onChange}
+                        errors={errors}
+                        onChange={(e) => field.onChange(e.target.rawValue)}
+                      />
+                    )}
                   />
                 </div>
 
