@@ -1,14 +1,8 @@
 import { ErrorMessage } from "@hookform/error-message";
 import { yupResolver } from "@hookform/resolvers/yup";
 import classNames from "classnames";
-import { delimiter } from "path";
-import { useCallback, useState } from "react";
-import {
-  Controller,
-  ControllerRenderProps,
-  SubmitHandler,
-  useForm,
-} from "react-hook-form";
+import { useRouter } from "next/router";
+import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import * as yup from "yup";
 import {
   Button,
@@ -17,6 +11,7 @@ import {
   FormInputMask,
   SelectInput,
 } from "../../../components";
+import { api } from "../../../lib/axios/apiClient";
 
 type NewClientForm = {
   slug: string;
@@ -54,6 +49,8 @@ const clientSchema = yup
 const options: string[] = ["Brasil", "Argentina", "Paraguai"];
 
 export function CreateClient() {
+  const router = useRouter();
+
   const {
     register,
     handleSubmit,
@@ -63,8 +60,13 @@ export function CreateClient() {
     resolver: yupResolver(clientSchema),
   });
 
-  const onSubmit: SubmitHandler<NewClientForm> = (data) => {
-    console.log(data);
+  const onSubmit: SubmitHandler<NewClientForm> = async (data) => {
+    const response = await api
+      .post("/tenants", data)
+      .then(() => alert("Salvo com sucesso"))
+      .catch((e) => alert(e));
+
+    router.push("/admin/clients");
   };
 
   return (
@@ -74,7 +76,11 @@ export function CreateClient() {
           Cadastrar Cliente
         </h2>
       </div>
-      <form className="space-y-6" onSubmit={handleSubmit(onSubmit)}>
+      <form
+        className="space-y-6"
+        onSubmit={handleSubmit(onSubmit)}
+        autoComplete="off"
+      >
         <div className="bg-white shadow px-4 py-5 sm:rounded-lg sm:p-6">
           <div className="md:grid md:grid-cols-3 md:gap-6">
             <div className="md:col-span-1">

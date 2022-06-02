@@ -1,6 +1,4 @@
-import useSWR from "swr";
-import { api } from "../lib/axios/apiClient";
-import { PageInfo } from "../services/types/PagedEntityResponse";
+import { PageInfo } from "./PagedEntityResponse";
 
 export type Tenant = {
   id: string;
@@ -31,17 +29,3 @@ type TenantPagedResponse = {
   totalCount: number;
   edges: TenantEdge[];
 };
-
-const fetcher = (url: string) => api.get(url).then((res) => res.data);
-
-export default function useTenant() {
-  const { data, error } = useSWR("tenants/page", fetcher);
-
-  return {
-    tenants: data?.nodes,
-    pageInfo: data?.pageInfo,
-    totalCount: data?.totalCount,
-    isLoading: !error && !data,
-    isError: error,
-  };
-}

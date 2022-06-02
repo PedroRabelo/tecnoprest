@@ -40,6 +40,7 @@ export const FormInput = <TFormValues extends Record<string, unknown>>({
           "transition-colors focus:outline-none focus:ring-2 focus:ring-opacity-50 border-red-600 hover:border-red-600 focus:border-red-600 focus:ring-red-600":
             hasError,
         })}
+        autoComplete="none"
         {...props}
         {...(register && register(name, rules))}
       />

@@ -41,6 +41,7 @@ export const FormInputMask = <TFormValues extends Record<string, unknown>>({
             ? "transition-colors focus:outline-none focus:ring-2 focus:ring-opacity-50 border-red-600 hover:border-red-600 focus:border-red-600 focus:ring-red-600"
             : "",
         ])}
+        autoComplete="none"
         onChange={onChange}
         {...props}
       />
