@@ -1,8 +1,14 @@
 import { ErrorMessage } from "@hookform/error-message";
 import { yupResolver } from "@hookform/resolvers/yup";
 import classNames from "classnames";
-import { useState } from "react";
-import { Controller, SubmitHandler, useForm } from "react-hook-form";
+import { delimiter } from "path";
+import { useCallback, useState } from "react";
+import {
+  Controller,
+  ControllerRenderProps,
+  SubmitHandler,
+  useForm,
+} from "react-hook-form";
 import * as yup from "yup";
 import {
   Button,
@@ -173,7 +179,7 @@ export function CreateClient() {
               <div className="grid grid-cols-6 gap-6">
                 <div className="col-span-6 sm:col-span-3">
                   <label className="block text-sm font-medium text-gray-700">
-                    CNPJ Mask
+                    CNPJ
                   </label>
                   <Controller
                     control={control}
@@ -184,8 +190,11 @@ export function CreateClient() {
                         type="text"
                         name="cnpj"
                         className="mb-2"
-                        options={{ date: true, datePattern: ["m", "d"] }}
-                        // register={onChange}
+                        options={{
+                          delimiters: [".", ".", "/", "-"],
+                          blocks: [2, 3, 3, 4, 2],
+                          numericOnly: true,
+                        }}
                         errors={errors}
                         onChange={(e) => field.onChange(e.target.rawValue)}
                       />
@@ -242,14 +251,24 @@ export function CreateClient() {
                   <label className="block text-sm font-medium text-gray-700">
                     Telefone de contato(Whatsapp)
                   </label>
-                  <FormInput<NewClientForm>
-                    id="contactNumber"
-                    type="text"
+                  <Controller
+                    control={control}
                     name="contactNumber"
-                    label="Telefone de contato(Whatsapp)"
-                    className="mb-2"
-                    register={register}
-                    errors={errors}
+                    render={({ field }) => (
+                      <FormInputMask<NewClientForm>
+                        id="contactNumber"
+                        type="text"
+                        name="contactNumber"
+                        className="mb-2"
+                        options={{
+                          numericOnly: true,
+                          blocks: [2, 1, 4, 4],
+                          delimiter: " ",
+                        }}
+                        errors={errors}
+                        onChange={(e) => field.onChange(e.target.rawValue)}
+                      />
+                    )}
                   />
                 </div>
 
@@ -257,14 +276,24 @@ export function CreateClient() {
                   <label className="block text-sm font-medium text-gray-700">
                     CEP
                   </label>
-                  <FormInput<NewClientForm>
-                    id="postalCode"
-                    type="text"
+                  <Controller
+                    control={control}
                     name="postalCode"
-                    label="CEP"
-                    className="mb-2"
-                    register={register}
-                    errors={errors}
+                    render={({ field }) => (
+                      <FormInputMask<NewClientForm>
+                        id="postalCode"
+                        type="text"
+                        name="postalCode"
+                        className="mb-2"
+                        options={{
+                          delimiters: [".", "-"],
+                          blocks: [2, 3, 3],
+                          numericOnly: true,
+                        }}
+                        errors={errors}
+                        onChange={(e) => field.onChange(e.target.rawValue)}
+                      />
+                    )}
                   />
                 </div>
 

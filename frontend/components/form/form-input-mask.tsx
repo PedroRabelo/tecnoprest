@@ -13,6 +13,7 @@ export type FormInputMaskProps<TFormValues> = {
   className?: string;
   options: CleaveOptions;
   errors?: Partial<DeepMap<TFormValues, FieldError>>;
+  onChange?: (arg: any) => any;
 } & InputHTMLAttributes<HTMLInputElement>;
 
 export const FormInputMask = <TFormValues extends Record<string, unknown>>({
@@ -21,6 +22,7 @@ export const FormInputMask = <TFormValues extends Record<string, unknown>>({
   options,
   errors,
   className,
+  onChange,
   ...props
 }: FormInputMaskProps<TFormValues>): JSX.Element => {
   // If the name is in a FieldArray, it will be 'fields.index.fieldName' and errors[name] won't return anything, so we are using lodash get
@@ -39,6 +41,7 @@ export const FormInputMask = <TFormValues extends Record<string, unknown>>({
             ? "transition-colors focus:outline-none focus:ring-2 focus:ring-opacity-50 border-red-600 hover:border-red-600 focus:border-red-600 focus:ring-red-600"
             : "",
         ])}
+        onChange={onChange}
         {...props}
       />
       <ErrorMessage

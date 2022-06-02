@@ -24,6 +24,7 @@
 
 ## TASKS
 
-
+[] Configurar máscaras dos componentes
+[] Salvar formulário no banco
 
 
