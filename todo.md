@@ -24,7 +24,9 @@
 
 ## TASKS
 
-[] Configurar máscaras dos componentes
-[] Salvar formulário no banco
+[x] Configurar máscaras dos componentes
+[x] Salvar formulário no banco
+[] Configurar paginação
+[] Toast de alerta de sucesso/erro
 
 
