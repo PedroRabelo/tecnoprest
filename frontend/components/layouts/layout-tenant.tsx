@@ -17,14 +17,19 @@ import { Fragment, useState } from "react";
 import { LinkMenu } from "../link-menu";
 
 const navigation = [
-  { name: "Dashboard", href: "/[tenant]", icon: HomeIcon, current: true },
+  { name: "Dashboard", href: "/tenant", icon: HomeIcon, current: true },
   {
     name: "Cadastro",
-    href: "/[tenant]/profile",
+    href: "/tenant/profile",
     icon: OfficeBuildingIcon,
     current: false,
   },
-  { name: "Motoristas", href: "#", icon: UserGroupIcon, current: false },
+  {
+    name: "Motoristas",
+    href: "/tenant/drivers",
+    icon: UserGroupIcon,
+    current: false,
+  },
   { name: "Veículos", href: "#", icon: TruckIcon, current: false },
   { name: "Manutenção", href: "#", icon: CogIcon, current: false },
   { name: "Controle de Rotas", href: "#", icon: MapIcon, current: false },

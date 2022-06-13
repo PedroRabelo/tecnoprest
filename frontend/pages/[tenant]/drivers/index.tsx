@@ -1,32 +1,19 @@
-import { UserAddIcon } from "@heroicons/react/solid";
 import Cleave from "cleave.js/react";
-import Link from "next/link";
-import { useRouter } from "next/router";
-import { useEffect } from "react";
-import { Button, Pagination } from "../../../components";
+import { Pagination } from "../../../components";
 import Alert from "../../../components/alert/alert";
 import { DataTableHeader } from "../../../components/data-table";
 import useGet from "../../../hooks/useGet";
-import { Tenant } from "../../../services/types/Tenant";
+import { Driver } from "../../../services/types/Driver";
 
-export function Clients() {
-  const router = useRouter();
-  const { data } = useGet("/tenants/page");
-
-  useEffect(() => {
-    if (data && router) {
-      if (data.nodes.length === 0) {
-        router.push(`/admin/clients`);
-      }
-    }
-  }, [data, router]);
+export function Drivers() {
+  const { data } = useGet("/drivers/page");
 
   return (
     <div className="px-4 sm:px-6 lg:px-8">
-      <DataTableHeader title="Clientes" link="/admin/clients/create" />
+      <DataTableHeader title="Motoristas" link="/tenant/drivers/create" />
 
       {data && data?.nodes?.length === 0 && (
-        <Alert>Nenhum Cliente cadastrado</Alert>
+        <Alert>Nenhum Motorista cadastrado</Alert>
       )}
       {data && data?.nodes.length > 0 && (
         <div className="mt-8 flex flex-col">
@@ -46,7 +33,7 @@ export function Clients() {
                         scope="col"
                         className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
                       >
-                        CNPJ
+                        CPF
                       </th>
                       <th
                         scope="col"
@@ -70,28 +57,28 @@ export function Clients() {
                   </thead>
                   <tbody className="bg-white">
                     {data &&
-                      data?.nodes?.map((tenant: Tenant, index: number) => (
+                      data?.nodes?.map((driver: Driver, index: number) => (
                         <tr
-                          key={tenant.email}
+                          key={driver.email}
                           className={index % 2 === 0 ? undefined : "bg-gray-50"}
                         >
                           <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6">
-                            {tenant.name}
+                            {driver.name}
                           </td>
                           <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
                             <Cleave
-                              value={tenant.cnpj}
+                              value={driver.cpf}
                               disabled
                               className="border-none bg-transparent p-0"
                               options={{
-                                delimiters: [".", ".", "/", "-"],
-                                blocks: [2, 3, 3, 4, 2],
+                                delimiters: [".", ".", "-"],
+                                blocks: [3, 3, 3, 2],
                                 numericOnly: true,
                               }}
                             />
                           </td>
                           <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                            {tenant.email}
+                            {driver.email}
                           </td>
                           <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
                             <span className="inline-flex items-center px-3 py-0.5 rounded-full text-sm font-medium bg-green-100 text-green-800">
@@ -104,7 +91,7 @@ export function Clients() {
                               className="text-indigo-600 hover:text-indigo-900"
                             >
                               Editar
-                              <span className="sr-only">{tenant.name}</span>
+                              <span className="sr-only">{driver.name}</span>
                             </a>
                           </td>
                         </tr>
@@ -121,4 +108,4 @@ export function Clients() {
   );
 }
 
-export default Clients;
+export default Drivers;

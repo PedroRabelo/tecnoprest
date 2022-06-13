@@ -12,7 +12,14 @@ export class DriversService {
   constructor(private prisma: PrismaService) {}
 
   create(createDriverDto: CreateDriverDto) {
-    return this.prisma.driver.create({ data: createDriverDto });
+    const data: Prisma.DriverUncheckedCreateInput = {
+      driverLicenseDate: new Date(createDriverDto.driverLicenseDate),
+      driverLicenseExpires: new Date(createDriverDto.driverLicenseExpires),
+      ...createDriverDto,
+    };
+    console.log(data);
+
+    return this.prisma.driver.create({ data });
   }
 
   findAll() {

@@ -10,7 +10,7 @@ export default function Home() {
           </Link>
         </li>
         <li>
-          <Link href="/cliente">
+          <Link href="/tenant">
             <a>Acesso Clientes</a>
           </Link>
         </li>

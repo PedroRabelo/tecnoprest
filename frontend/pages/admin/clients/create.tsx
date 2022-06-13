@@ -13,6 +13,7 @@ import {
   SelectInput,
 } from "../../../components";
 import { api } from "../../../lib/axios/apiClient";
+import { countryOptions, ufOptions } from "../../../services/types";
 
 type NewClientForm = {
   slug: string;
@@ -46,8 +47,6 @@ const clientSchema = yup
     country: yup.string().required(requiredText),
   })
   .required();
-
-const options: string[] = ["Brasil", "Argentina", "Paraguai"];
 
 export function CreateClient() {
   const router = useRouter();
@@ -301,11 +300,10 @@ export function CreateClient() {
                   <label className="block text-sm font-medium text-gray-700">
                     Estado
                   </label>
-                  <FormInput<NewClientForm>
+                  <SelectInput<NewClientForm>
                     id="state"
-                    type="text"
                     name="state"
-                    label="Estado"
+                    options={ufOptions}
                     className="mb-2"
                     register={register}
                     errors={errors}
@@ -319,7 +317,7 @@ export function CreateClient() {
                   <SelectInput<NewClientForm>
                     id="country"
                     name="country"
-                    options={options}
+                    options={countryOptions}
                     className="mb-2"
                     register={register}
                     errors={errors}
