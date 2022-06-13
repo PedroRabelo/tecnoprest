@@ -54,7 +54,7 @@ export function LayoutTenant({ children }: Props) {
 
   return (
     <>
-      <div>
+      <div className="bg-slate-100 h-screen">
         <Transition.Root show={sidebarOpen} as={Fragment}>
           <Dialog
             as="div"
@@ -246,7 +246,7 @@ export function LayoutTenant({ children }: Props) {
           </div>
 
           <main>
-            <div className="py-6">
+            <div className="py-6 bg-slate-100">
               <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8">
                 {children}
               </div>
