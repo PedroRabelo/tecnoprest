@@ -49,6 +49,35 @@ model Tenant {
   @@map("tenants")
 }
 
+model Driver {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  active    Boolean  @default(true)
+
+  name                  String
+  cpf                   String    @unique
+  rg                    String
+  rgUf                  String
+  driverLicense         String    @unique
+  driverLicenseCategory String
+  driverLicenseDate     DateTime
+  driverLicenseExpires  DateTime
+  phoneNumber           String
+  email                 String    @unique
+  postalCode            String?
+  streetAddress         String?
+  city                  String?
+  state                 String?
+  country               String?
+  mopp                  String?
+  moppExpires           DateTime?
+  languages             String[]
+  emergencyPhone        String?
+
+  @@map("drivers")
+}
+
 enum Role {
   USER
   ADMIN
