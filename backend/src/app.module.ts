@@ -9,6 +9,7 @@ import { JwtAuthGuard } from './auth/guards/jwt-auth.guard';
 import { TenantsModule } from './tenants/tenants.module';
 import { DriversModule } from './drivers/drivers.module';
 import { VehiclesModule } from './vehicles/vehicles.module';
+import { TrackersModule } from './trackers/trackers.module';
 
 @Module({
   imports: [
@@ -18,6 +19,7 @@ import { VehiclesModule } from './vehicles/vehicles.module';
     TenantsModule,
     DriversModule,
     VehiclesModule,
+    TrackersModule,
   ],
   controllers: [AppController],
   providers: [

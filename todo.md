@@ -3,6 +3,10 @@
 [x] Mapear entidades Tenant, User
 [x] CRUD do Tenant
 [x] CRUD User
+[x] CRUD Veículo
+[] CRUD Rastreadores
+[] Vincular veículo a um rastreador
+[] Cadastrar locais estratégicos
 
 ## FRONT-END
 
@@ -15,12 +19,12 @@
 [x] Cadastro de motoristas
 [] Cadastro de veículos
 [] Cadastro de locais estratégicos
+[] Implementar autenticação e controle de acesso
 [] Layout cadastro empresa - menu tenant(dados da empresa, pagamento, cobranças, etc)
 [] Layout cadastro de controle de rotas
 [] Layout cadastro rastreamento
 [] Implementar cadastro de novo usuário da empresa(tenant) - (CNPJ, E-mail, código, senha)
 [] Implementar cadastro de usuário
-[] Implementar autenticação e controle de acesso
 [] Implementar internacionalização
 
 ## TASKS
