@@ -44,7 +44,9 @@ model Tenant {
   state         String
   country       String
 
-  users User[]
+  users        User[]
+  vehicles     VehicleTenant[]
+  mapLocations TenantMapLocation[]
 
   @@map("tenants")
 }
@@ -76,6 +78,117 @@ model Driver {
   emergencyPhone        String?
 
   @@map("drivers")
+}
+
+model VehicleCategory {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  name String
+
+  vehicles Vehicle[]
+
+  @@map("vehicle_categories")
+}
+
+model VehicleMake {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  name     String
+  vehicles Vehicle[]
+
+  models VehicleModel[]
+
+  @@map("vehicle_makers")
+}
+
+model VehicleModel {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  name String
+
+  maker  VehicleMake @relation(fields: [makeId], references: [id])
+  makeId String
+
+  vehicles Vehicle[]
+  @@map("vehicle_models")
+}
+
+model Vehicle {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  active    Boolean  @default(true)
+
+  licensePlate String @unique
+
+  renavan     String?
+  chassi      String?
+  modelYear   Int?
+  createdYear Int?
+  ownerCpf    String?
+  owner       String?
+
+  category   VehicleCategory? @relation(fields: [categoryId], references: [id])
+  categoryId String?
+  make       VehicleMake?     @relation(fields: [makeId], references: [id])
+  makeId     String?
+  model      VehicleModel?    @relation(fields: [modelId], references: [id])
+  modelId    String?
+
+  trackers Tracker[]
+  tenants  VehicleTenant[]
+
+  @@map("vehicles")
+}
+
+model Tracker {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  active    Boolean  @default(true)
+
+  trackNumber String
+  technology  String
+  vehicle     Vehicle @relation(fields: [vehicleId], references: [id])
+  vehicleId   String
+
+  @@unique([trackNumber, technology])
+  @@map("trackers")
+}
+
+model VehicleTenant {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  vehicle   Vehicle @relation(fields: [vehicleId], references: [id])
+  vehicleId String
+  tenant    Tenant  @relation(fields: [tenantId], references: [id])
+  tenantId  String
+
+  @@map("vehicles_tenant")
+}
+
+model TenantMapLocation {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  active    Boolean  @default(true)
+
+  title String
+  lat   String[]
+  long  String[]
+
+  tenant   Tenant @relation(fields: [tenantId], references: [id])
+  tenantId String
+
+  @@map("tenant_map_locations")
 }
 
 enum Role {

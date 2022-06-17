@@ -17,7 +17,6 @@ export class DriversService {
       driverLicenseExpires: new Date(createDriverDto.driverLicenseExpires),
       ...createDriverDto,
     };
-    console.log(data);
 
     return this.prisma.driver.create({ data });
   }
