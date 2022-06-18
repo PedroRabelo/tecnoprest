@@ -11,6 +11,7 @@ import {
 import { SearchIcon } from "@heroicons/react/solid";
 import Image from "next/image";
 import { Fragment, useState } from "react";
+import { signOut } from "../../contexts/auth-context";
 import { LinkMenu } from "../link-menu";
 
 const navigation = [
@@ -27,7 +28,6 @@ const navigation = [
 const userNavigation = [
   { name: "Perfil", href: "#" },
   { name: "Configurações", href: "#" },
-  { name: "Sair", href: "#" },
 ];
 
 function classNames(...classes: string[]) {
@@ -40,6 +40,10 @@ type Props = {
 
 export function LayoutAdmin({ children }: Props) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
+
+  function handleSignOut() {
+    signOut();
+  }
 
   return (
     <>
@@ -227,6 +231,20 @@ export function LayoutAdmin({ children }: Props) {
                           )}
                         </Menu.Item>
                       ))}
+                      <Menu.Item>
+                        {({ active }) => (
+                          <a
+                            href="/"
+                            className={classNames(
+                              active ? "bg-gray-100" : "",
+                              "block px-4 py-2 text-sm text-gray-700"
+                            )}
+                            onClick={handleSignOut}
+                          >
+                            Sair
+                          </a>
+                        )}
+                      </Menu.Item>
                     </Menu.Items>
                   </Transition>
                 </Menu>

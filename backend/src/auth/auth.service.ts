@@ -7,6 +7,8 @@ import { UserEntity } from 'src/user/entities/user.entity';
 import { UserPayload } from './models/user-payload';
 import { JwtService } from '@nestjs/jwt';
 import { UserToken } from './models/user-token';
+import { TenantsService } from 'src/tenants/tenants.service';
+import { TenantEntity } from 'src/tenants/entities/tenant.entity';
 
 @Injectable()
 export class AuthService {
@@ -14,9 +16,10 @@ export class AuthService {
     private prisma: PrismaService,
     private readonly userService: UserService,
     private readonly jwtService: JwtService,
+    private readonly tenantService: TenantsService,
   ) {}
 
-  login(user: UserEntity): UserToken {
+  async login(user: UserEntity): Promise<UserToken> {
     const payload: UserPayload = {
       sub: user.id,
       email: user.email,
@@ -26,6 +29,11 @@ export class AuthService {
 
     const jwtToken = this.jwtService.sign(payload);
 
+    let userTenant: TenantEntity;
+    if (payload.tenantId) {
+      userTenant = await this.tenantService.findOne(payload.tenantId);
+    }
+
     return {
       access_token: jwtToken,
       userData: {
@@ -34,6 +42,7 @@ export class AuthService {
         email: user.email,
         role: user.role,
       },
+      slug: userTenant?.slug,
     };
   }
 

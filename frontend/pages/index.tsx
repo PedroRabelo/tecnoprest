@@ -10,13 +10,8 @@ export default function Home() {
           </Link>
         </li>
         <li>
-          <Link href="/tenant">
+          <Link href="/app">
             <a>Acesso Clientes</a>
-          </Link>
-        </li>
-        <li>
-          <Link href="/login">
-            <a>Login</a>
           </Link>
         </li>
       </ul>

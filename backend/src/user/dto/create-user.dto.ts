@@ -1,11 +1,13 @@
 import {
   IsEmail,
+  IsEnum,
   IsString,
   Matches,
   MaxLength,
   MinLength,
 } from 'class-validator';
 import { UserEntity } from '../entities/user.entity';
+import { Role } from '@prisma/client';
 
 export class CreateUserDto extends UserEntity {
   @IsEmail()
@@ -21,4 +23,7 @@ export class CreateUserDto extends UserEntity {
 
   @IsString()
   name: string;
+
+  @IsEnum(Role)
+  role: Role;
 }

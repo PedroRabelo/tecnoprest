@@ -76,4 +76,10 @@ export class TenantsController {
   remove(@Param('id') id: string) {
     return this.tenantsService.remove(id);
   }
+
+  @Get('/slug/:slug')
+  @ApiOkResponse({ type: TenantEntity })
+  async findBySlug(@Param('slug') slug: string) {
+    return new TenantEntity(await this.tenantsService.findBySlug(slug));
+  }
 }

@@ -1,6 +1,7 @@
 import Router from "next/router";
 import { destroyCookie, parseCookies, setCookie } from "nookies";
 import { createContext, ReactNode, useEffect, useState } from "react";
+import useGet from "../hooks/useGet";
 import { api } from "../lib/axios/apiClient";
 
 type User = {
@@ -8,6 +9,7 @@ type User = {
   name: string;
   email: string;
   role: string;
+  slug: string;
 };
 
 type SignInCredentials = {
@@ -45,9 +47,9 @@ export function AuthProvider({ children }: AuthProviderProps) {
       api
         .get("/me")
         .then((response) => {
-          const { id, name, email, role } = response.data;
+          const { id, name, email, role, slug } = response.data;
 
-          setUser({ id, name, email, role });
+          setUser({ id, name, email, role, slug });
         })
         .catch(() => {
           signOut();
@@ -59,7 +61,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
     try {
       const response = await api.post("login", { email, password });
 
-      const { access_token, userData } = response.data;
+      const { access_token, userData, slug } = response.data;
 
       setCookie(undefined, "tecnoprest.token", access_token, {
         maxAge: 60 * 60 * 24 * 30, // 30 dias
@@ -71,6 +73,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
         name: userData.name,
         email,
         role: userData.role,
+        slug,
       });
 
       if (userData.role === "ADMIN" || userData.role === "USER") {
@@ -79,7 +82,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
         userData.role === "ADMIN_TENANT" ||
         userData.role === "USER_TENANT"
       ) {
-        await Router.push("/[tenant]");
+        await Router.push(`/app`);
       } else {
         await Router.push("/");
       }

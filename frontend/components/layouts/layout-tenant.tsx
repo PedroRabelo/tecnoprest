@@ -13,20 +13,21 @@ import {
 } from "@heroicons/react/outline";
 import { SearchIcon } from "@heroicons/react/solid";
 import Image from "next/image";
-import { Fragment, useState } from "react";
+import { Fragment, useContext, useState } from "react";
+import { AuthContext, signOut } from "../../contexts/auth-context";
 import { LinkMenu } from "../link-menu";
 
 const navigation = [
-  { name: "Dashboard", href: "/tenant", icon: HomeIcon, current: true },
+  { name: "Dashboard", href: "/", icon: HomeIcon, current: true },
   {
     name: "Cadastro",
-    href: "/tenant/profile",
+    href: "/profile",
     icon: OfficeBuildingIcon,
     current: false,
   },
   {
     name: "Motoristas",
-    href: "/tenant/drivers",
+    href: "/drivers",
     icon: UserGroupIcon,
     current: false,
   },
@@ -38,7 +39,6 @@ const navigation = [
 const userNavigation = [
   { name: "Perfil", href: "#" },
   { name: "Configurações", href: "#" },
-  { name: "Sair", href: "#" },
 ];
 
 function classNames(...classes: string[]) {
@@ -51,6 +51,12 @@ type Props = {
 
 export function LayoutTenant({ children }: Props) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
+
+  const { user } = useContext(AuthContext);
+
+  function handleSignOut() {
+    signOut();
+  }
 
   return (
     <>
@@ -209,7 +215,9 @@ export function LayoutTenant({ children }: Props) {
                     <Menu.Button className="max-w-xs bg-white flex items-center text-sm rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
                       <span className="sr-only">Open user menu</span>
                       <div className="flex items-center h-8 w-8 rounded-full bg-indigo-500">
-                        <span className="text-white grow">PR</span>
+                        <span className="text-white grow">
+                          {user?.name?.substring(0, 1).toLocaleUpperCase()}
+                        </span>
                       </div>
                     </Menu.Button>
                   </div>
@@ -238,6 +246,20 @@ export function LayoutTenant({ children }: Props) {
                           )}
                         </Menu.Item>
                       ))}
+                      <Menu.Item>
+                        {({ active }) => (
+                          <a
+                            href="/"
+                            className={classNames(
+                              active ? "bg-gray-100" : "",
+                              "block px-4 py-2 text-sm text-gray-700"
+                            )}
+                            onClick={handleSignOut}
+                          >
+                            Sair
+                          </a>
+                        )}
+                      </Menu.Item>
                     </Menu.Items>
                   </Transition>
                 </Menu>

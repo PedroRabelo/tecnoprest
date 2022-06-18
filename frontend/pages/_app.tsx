@@ -15,7 +15,7 @@ function MyApp({ Component, pageProps }: AppProps) {
 
   let Layout = LayoutPublic;
 
-  if (pathname.indexOf("/[tenant]") === 0) {
+  if (pathname.indexOf("/app") === 0) {
     Layout = LayoutTenant;
   }
 

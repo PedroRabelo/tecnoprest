@@ -54,4 +54,8 @@ export class TenantsService {
   remove(id: string) {
     return this.prisma.tenant.delete({ where: { id: id } });
   }
+
+  findBySlug(slug: string) {
+    return this.prisma.tenant.findUnique({ where: { slug } });
+  }
 }

@@ -31,7 +31,7 @@ model Tenant {
   updatedAt DateTime @updatedAt
   ativo     Boolean  @default(true)
 
-  slug          String
+  slug          String  @unique
   logoUrl       String?
   cnpj          String  @unique
   name          String

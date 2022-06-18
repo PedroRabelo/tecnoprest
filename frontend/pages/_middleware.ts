@@ -6,7 +6,10 @@ export function middleware(req: NextRequest, ev: NextFetchEvent) {
 
   const url = req.nextUrl.clone();
 
-  if (pathname.startsWith("/admin")) {
+  const tenantPath = pathname.startsWith("/app");
+  const adminPath = pathname.startsWith("/admin");
+
+  if (adminPath || tenantPath) {
     if (!cookies) {
       return NextResponse.rewrite(`${process.env.NEXTAUTH_URL}/login`);
     }

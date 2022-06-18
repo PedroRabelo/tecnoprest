@@ -6,4 +6,5 @@ export interface UserToken {
     email: string;
     role: string;
   };
+  slug: string;
 }

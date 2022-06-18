@@ -16,9 +16,9 @@
 [x] Implementar layout menu do tenant(empresa, motoristas, veículos, manutenção, controle de rota, rastreamento)
 [x] Implementar cadastro da empresa
 [x] Cadastro de motoristas
+[] Implementar autenticação e controle de acesso do tenant
 [] Cadastro de veículos
 [] Cadastro de locais estratégicos
-[] Implementar autenticação e controle de acesso
 [] Layout cadastro empresa - menu tenant(dados da empresa, pagamento, cobranças, etc)
 [] Layout cadastro de controle de rotas
 [] Layout cadastro rastreamento
@@ -34,6 +34,7 @@
 [] Validações de formulário
 [] Configurar paginação
 [] Toast de alerta de sucesso/erro
+[] Verificar usuário tem acesso ao tenant(slug) da url
 
 ### BACK-END
 [x] Configurar tratamento de exceções
