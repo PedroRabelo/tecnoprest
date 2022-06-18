@@ -4,8 +4,7 @@
 [x] CRUD do Tenant
 [x] CRUD User
 [x] CRUD Veículo
-[] CRUD Rastreadores
-[] Vincular veículo a um rastreador
+[x] Vincular veículo a um rastreador
 [] Cadastrar locais estratégicos
 
 ## FRONT-END

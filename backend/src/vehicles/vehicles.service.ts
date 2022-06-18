@@ -4,7 +4,6 @@ import { Prisma } from '@prisma/client';
 import { ConflictError } from 'src/common/errors/types/ConflictError';
 import { ConnectionArgs } from 'src/page/connection-args.dto';
 import { PrismaService } from 'src/prisma/prisma.service';
-import { UserEntity } from 'src/user/entities/user.entity';
 import { CreateVehicleDto } from './dto/create-vehicle.dto';
 import { UpdateVehicleDto } from './dto/update-vehicle.dto';
 import { VehicleEntity } from './entities/vehicle.entity';
@@ -87,5 +86,23 @@ export class VehiclesService {
 
   remove(id: string) {
     return this.prisma.vehicle.delete({ where: { id: id } });
+  }
+
+  findVehicleTrackers(id: string) {
+    return this.prisma.vehicle.findMany({
+      where: {
+        id,
+      },
+      select: {
+        licensePlate: true,
+        trackers: {
+          select: {
+            id: true,
+            trackNumber: true,
+            technology: true,
+          },
+        },
+      },
+    });
   }
 }

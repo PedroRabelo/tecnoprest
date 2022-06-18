@@ -73,4 +73,10 @@ export class VehiclesController {
   remove(@Param('id') id: string) {
     return this.vehiclesService.remove(id);
   }
+
+  @Get(':id/trackers')
+  @ApiOkResponse({ type: [VehicleEntity] })
+  async findVehicleTrackers(@Param('id') id: string) {
+    return await this.vehiclesService.findVehicleTrackers(id);
+  }
 }
