@@ -18,20 +18,20 @@ import { AuthContext, signOut } from "../../contexts/auth-context";
 import { LinkMenu } from "../link-menu";
 
 const navigation = [
-  { name: "Dashboard", href: "/", icon: HomeIcon, current: true },
+  { name: "Dashboard", href: "/app", icon: HomeIcon, current: true },
   {
     name: "Cadastro",
-    href: "/profile",
+    href: "/app/profile",
     icon: OfficeBuildingIcon,
     current: false,
   },
   {
     name: "Motoristas",
-    href: "/drivers",
+    href: "/app/drivers",
     icon: UserGroupIcon,
     current: false,
   },
-  { name: "Veículos", href: "#", icon: TruckIcon, current: false },
+  { name: "Veículos", href: "/app/vehicles", icon: TruckIcon, current: false },
   { name: "Manutenção", href: "#", icon: CogIcon, current: false },
   { name: "Controle de Rotas", href: "#", icon: MapIcon, current: false },
   { name: "Rastreamento", href: "#", icon: LocationMarkerIcon, current: false },

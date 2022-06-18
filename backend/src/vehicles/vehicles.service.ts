@@ -6,6 +6,7 @@ import { ConnectionArgs } from 'src/page/connection-args.dto';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { CreateVehicleDto } from './dto/create-vehicle.dto';
 import { UpdateVehicleDto } from './dto/update-vehicle.dto';
+import { VehiclePageEntity } from './entities/vehicle-page.entity';
 import { VehicleEntity } from './entities/vehicle.entity';
 
 @Injectable()
@@ -61,13 +62,31 @@ export class VehiclesService {
 
     return findManyCursorConnection(
       (args) => {
-        return this.prisma.vehicle.findMany({ ...args, where: where });
+        return this.prisma.vehicle.findMany({
+          ...args,
+          where: where,
+          select: {
+            id: true,
+            licensePlate: true,
+            active: true,
+            make: {
+              select: {
+                name: true,
+              },
+            },
+            model: {
+              select: {
+                name: true,
+              },
+            },
+          },
+        });
       },
       () => this.prisma.vehicle.count({ where: where }),
       connectionArgs,
       {
         recordToEdge: (record) => ({
-          node: new VehicleEntity(record),
+          node: new VehiclePageEntity(record),
         }),
       },
     );

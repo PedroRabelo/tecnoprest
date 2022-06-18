@@ -1,9 +1,7 @@
-import { UserAddIcon } from "@heroicons/react/solid";
 import Cleave from "cleave.js/react";
-import Link from "next/link";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
-import { Button, Pagination } from "../../../components";
+import { Pagination } from "../../../components";
 import Alert from "../../../components/alert/alert";
 import { DataTableHeader } from "../../../components/data-table";
 import useGet from "../../../hooks/useGet";
