@@ -1,6 +1,12 @@
+import {
+  PencilAltIcon,
+  StatusOnlineIcon,
+  TrashIcon,
+} from "@heroicons/react/outline";
+import Link from "next/link";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
-import { Pagination } from "../../../components";
+import { Button, Pagination } from "../../../components";
 import Alert from "../../../components/alert/alert";
 import { DataTableHeader } from "../../../components/data-table";
 import { useGet } from "../../../hooks/useGet";
@@ -97,20 +103,35 @@ export function Vehicles() {
                               )}
                             </td>
                             <td className="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6">
-                              <a
-                                href="#"
-                                className="text-indigo-600 hover:text-indigo-900 mr-3"
-                              >
-                                Editar
-                                <span className="sr-only">{vehicle.id}</span>
-                              </a>
-                              <a
-                                href="#"
-                                className="text-red-600 hover:text-red-900"
-                              >
-                                Excluir
-                                <span className="sr-only">{vehicle.id}</span>
-                              </a>
+                              <div className="flex justify-end">
+                                <Link href="#">
+                                  <a className="text-indigo-600 hover:text-indigo-900 mr-3">
+                                    <PencilAltIcon
+                                      className="-ml-1 mr-2 h-5 w-5"
+                                      aria-hidden="true"
+                                    />
+                                  </a>
+                                </Link>
+                                <Link href="/app/vehicles/trackers">
+                                  <a
+                                    className="text-indigo-600 hover:text-indigo-900 mr-3"
+                                    placeholder="Vincular Rastreador"
+                                  >
+                                    <StatusOnlineIcon
+                                      className="-ml-1 mr-2 h-5 w-5"
+                                      aria-hidden="true"
+                                    />
+                                  </a>
+                                </Link>
+                                <Link href="#">
+                                  <a className="text-red-600 hover:text-red-900">
+                                    <TrashIcon
+                                      className="-ml-1 mr-2 h-5 w-5"
+                                      aria-hidden="true"
+                                    />
+                                  </a>
+                                </Link>
+                              </div>
                             </td>
                           </tr>
                         )
