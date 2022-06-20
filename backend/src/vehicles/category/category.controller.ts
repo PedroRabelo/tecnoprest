@@ -1,34 +1,30 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Param } from '@nestjs/common';
+import {
+  ApiBearerAuth,
+  ApiExtraModels,
+  ApiOkResponse,
+  ApiTags,
+} from '@nestjs/swagger';
+import { Page } from 'src/page/page.dto';
 import { CategoryService } from './category.service';
-import { CreateCategoryDto } from './dto/create-category.dto';
-import { UpdateCategoryDto } from './dto/update-category.dto';
+import { VehicleCategoryEntity } from './entities/category.entity';
 
-@Controller('category')
+@Controller('vehicle-categories')
+@ApiTags('vehicle-categories')
+@ApiExtraModels(Page)
+@ApiBearerAuth()
 export class CategoryController {
   constructor(private readonly categoryService: CategoryService) {}
 
-  @Post()
-  create(@Body() createCategoryDto: CreateCategoryDto) {
-    return this.categoryService.create(createCategoryDto);
-  }
-
   @Get()
+  @ApiOkResponse({ type: [VehicleCategoryEntity] })
   findAll() {
     return this.categoryService.findAll();
   }
 
   @Get(':id')
+  @ApiOkResponse({ type: VehicleCategoryEntity })
   findOne(@Param('id') id: string) {
-    return this.categoryService.findOne(+id);
-  }
-
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateCategoryDto: UpdateCategoryDto) {
-    return this.categoryService.update(+id, updateCategoryDto);
-  }
-
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.categoryService.remove(+id);
+    return this.categoryService.findOne(id);
   }
 }

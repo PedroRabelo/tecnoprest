@@ -6,8 +6,8 @@ export type Vehicle = {
   licensePlate: string;
   renavan: string;
   chassi: string;
-  modelYear: number;
-  createdYear: number;
+  modelYear: string;
+  createdYear: string;
   ownerCpf: string;
   owner: string;
   categoryId: string;

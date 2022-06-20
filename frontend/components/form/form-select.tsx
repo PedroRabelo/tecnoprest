@@ -1,7 +1,11 @@
 import { ErrorMessage } from "@hookform/error-message";
 import classNames from "classnames";
 import get from "lodash.get";
-import React, { DetailedHTMLProps, SelectHTMLAttributes } from "react";
+import React, {
+  ChangeEventHandler,
+  DetailedHTMLProps,
+  SelectHTMLAttributes,
+} from "react";
 import {
   DeepMap,
   FieldError,
@@ -17,11 +21,12 @@ export type FormSelectProps<TFormValues> = {
   id: string;
   name: Path<TFormValues>;
   size?: InputSize;
-  options: string[];
+  options: { id: string; name: string }[];
   className?: string;
   rules?: RegisterOptions;
   register?: UseFormRegister<TFormValues>;
   errors?: Partial<DeepMap<TFormValues, FieldError>>;
+  onChange?: (arg: any) => any;
 } & DetailedHTMLProps<
   SelectHTMLAttributes<HTMLSelectElement>,
   HTMLSelectElement
@@ -41,6 +46,7 @@ export const SelectInput = <TFormValues extends Record<string, unknown>>({
   rules,
   errors,
   className,
+  onChange,
   ...props
 }: FormSelectProps<TFormValues>): JSX.Element => {
   // If the name is in a FieldArray, it will be 'fields.index.fieldName' and errors[name] won't return anything, so we are using lodash get
@@ -62,10 +68,15 @@ export const SelectInput = <TFormValues extends Record<string, unknown>>({
         ])}
         {...props}
         {...(register && register(name, rules))}
+        onChange={onChange}
       >
         <option></option>
-        {options.length > 0 &&
-          options.map((option) => <option key={option}>{option}</option>)}
+        {options?.length > 0 &&
+          options.map((option) => (
+            <option key={option.id} value={option.id}>
+              {option.name}
+            </option>
+          ))}
       </select>
       <ErrorMessage
         errors={errors}

@@ -9,8 +9,8 @@ import { Page } from 'src/page/page.dto';
 import { VehicleMakeEntity } from './entities/maker.entity';
 import { MakerService } from './maker.service';
 
-@Controller('makers')
-@ApiTags('vehicles-make')
+@Controller('vehicle-makers')
+@ApiTags('vehicle-make')
 @ApiExtraModels(Page)
 @ApiBearerAuth()
 export class MakerController {

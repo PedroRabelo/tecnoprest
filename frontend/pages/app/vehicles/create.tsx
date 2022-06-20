@@ -1,6 +1,6 @@
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useRouter } from "next/router";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import * as yup from "yup";
 import {
@@ -9,15 +9,17 @@ import {
   FormInputMask,
   SelectInput,
 } from "../../../components";
-import useGet from "../../../hooks/useGet";
+import { useGet, useGetDependent } from "../../../hooks/useGet";
 import { api } from "../../../lib/axios/apiClient";
+import { setEmptyOrStr } from "../../../lib/lodash";
+import { Vehicle } from "../../../services/types/Vehicle";
 
 type NewVehicleForm = {
   licensePlate: string;
   renavan: string;
   chassi: string;
-  modelYear: number;
-  createdYear: number;
+  modelYear: string;
+  createdYear: string;
   ownerCpf: string;
   owner: string;
   categoryId: string;
@@ -34,24 +36,70 @@ const vehicleSchema = yup.object({
 export function CreateVehicle() {
   const router = useRouter();
 
+  const [makerSelected, setMakerSelected] = useState<string>("");
+  const [vehicle, setVehicle] = useState<Vehicle>();
+
+  const { data: categories } = useGet("vehicle-categories");
+  const { data: makers } = useGet("vehicle-makers");
+  const { data: models } = useGetDependent(
+    "vehicle-models/maker/" + makerSelected
+  );
+
   const {
     register,
     handleSubmit,
     control,
     setFocus,
     formState: { errors },
+    setValue,
   } = useForm<NewVehicleForm>({
     resolver: yupResolver(vehicleSchema),
+    defaultValues: {
+      categoryId: undefined,
+      makeId: undefined,
+      modelId: undefined,
+    },
   });
 
   const onSubmit: SubmitHandler<NewVehicleForm> = async (data) => {
     await api
       .post("/vehicles", data)
-      .then(() => alert("Salvo com sucesso"))
-      .catch((e) => alert(e));
-
-    router.push("/app/vehicles");
+      .then(() => {
+        alert("Salvo com sucesso");
+        router.push("/app/vehicles");
+      })
+      .catch((e) => {
+        console.log(e.response.data.message);
+        alert(e.message);
+      });
   };
+
+  function handleChangeMaker(event: any) {
+    setMakerSelected(event.target.value);
+  }
+
+  async function handleSearchLicensePlate(licensePlate: string) {
+    await api
+      .get("/vehicles/" + licensePlate)
+      .then((response) => {
+        setVehicle(response.data);
+      })
+      .catch((e) => {
+        console.log(e.response.data.message);
+        alert(e.message);
+      });
+  }
+
+  useEffect(() => {
+    setValue("makeId", vehicle?.makeId ? vehicle.makeId : "");
+    setValue("modelId", vehicle?.modelId ? vehicle.modelId : "");
+    setValue("modelYear", vehicle?.modelYear ? vehicle.modelYear : "");
+    setValue("createdYear", vehicle?.createdYear ? vehicle.createdYear : "");
+    setValue("categoryId", vehicle?.categoryId ? vehicle.categoryId : "");
+    setValue("chassi", vehicle?.chassi ? vehicle.chassi : "");
+    setValue("renavan", vehicle?.renavan ? vehicle.renavan : "");
+    setValue("owner", vehicle?.owner ? vehicle.owner : "");
+  }, [vehicle, setValue]);
 
   return (
     <>
@@ -102,6 +150,7 @@ export function CreateVehicle() {
                           }}
                           errors={errors}
                           onChange={(e) => field.onChange(e.target.rawValue)}
+                          onBlur={(e) => handleSearchLicensePlate(field.value)}
                         />
                       )}
                     />
@@ -131,10 +180,12 @@ export function CreateVehicle() {
                   <SelectInput<NewVehicleForm>
                     id="maker"
                     name="makeId"
-                    options={[]}
+                    options={makers}
                     className="mb-2"
                     register={register}
                     errors={errors}
+                    onChange={(e) => handleChangeMaker(e)}
+                    rules={{ required: false, setValueAs: setEmptyOrStr }}
                   />
                 </div>
 
@@ -145,10 +196,11 @@ export function CreateVehicle() {
                   <SelectInput<NewVehicleForm>
                     id="model"
                     name="modelId"
-                    options={[]}
+                    options={models}
                     className="mb-2"
                     register={register}
                     errors={errors}
+                    rules={{ required: false, setValueAs: setEmptyOrStr }}
                   />
                 </div>
 
@@ -207,10 +259,11 @@ export function CreateVehicle() {
                   <SelectInput<NewVehicleForm>
                     id="category"
                     name="categoryId"
-                    options={[]}
+                    options={categories}
                     className="mb-2"
                     register={register}
                     errors={errors}
+                    rules={{ required: false, setValueAs: setEmptyOrStr }}
                   />
                 </div>
 

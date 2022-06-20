@@ -3,7 +3,7 @@ import { useEffect } from "react";
 import { Pagination } from "../../../components";
 import Alert from "../../../components/alert/alert";
 import { DataTableHeader } from "../../../components/data-table";
-import useGet from "../../../hooks/useGet";
+import { useGet } from "../../../hooks/useGet";
 import { VehiclePage } from "../../../services/types/Vehicle";
 
 export function Vehicles() {

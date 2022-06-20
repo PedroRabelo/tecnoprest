@@ -7,7 +7,6 @@ import { PrismaService } from 'src/prisma/prisma.service';
 import { CreateVehicleDto } from './dto/create-vehicle.dto';
 import { UpdateVehicleDto } from './dto/update-vehicle.dto';
 import { VehiclePageEntity } from './entities/vehicle-page.entity';
-import { VehicleEntity } from './entities/vehicle.entity';
 
 @Injectable()
 export class VehiclesService {
