@@ -57,7 +57,7 @@ export class TenantsController {
   }
 
   @Get(':id')
-  @ApiOkResponse({ type: [TenantEntity] })
+  @ApiOkResponse({ type: TenantEntity })
   async findOne(@Param('id') id: string) {
     return new TenantEntity(await this.tenantsService.findOne(id));
   }

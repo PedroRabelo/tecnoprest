@@ -2,11 +2,14 @@ import { Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
 
 @Injectable()
-export class MakerService {
+export class ModelService {
   constructor(private prisma: PrismaService) {}
 
-  findAll() {
-    return this.prisma.vehicleMake.findMany({
+  findAllByMaker(makeId: string) {
+    return this.prisma.vehicleModel.findMany({
+      where: {
+        makeId,
+      },
       select: {
         id: true,
         name: true,
@@ -15,6 +18,6 @@ export class MakerService {
   }
 
   findOne(id: string) {
-    return this.prisma.vehicleMake.findUnique({ where: { id } });
+    return this.prisma.vehicleModel.findUnique({ where: { id } });
   }
 }

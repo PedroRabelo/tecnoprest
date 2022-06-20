@@ -1,34 +1,31 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Param } from '@nestjs/common';
+import {
+  ApiBearerAuth,
+  ApiExtraModels,
+  ApiOkResponse,
+  ApiTags,
+} from '@nestjs/swagger';
+import { Page } from 'src/page/page.dto';
+import { VehicleMakeEntity } from './entities/maker.entity';
 import { MakerService } from './maker.service';
-import { CreateMakerDto } from './dto/create-maker.dto';
-import { UpdateMakerDto } from './dto/update-maker.dto';
 
-@Controller('maker')
+@Controller('makers')
+@ApiTags('vehicles-make')
+@ApiExtraModels(Page)
+@ApiBearerAuth()
 export class MakerController {
   constructor(private readonly makerService: MakerService) {}
 
-  @Post()
-  create(@Body() createMakerDto: CreateMakerDto) {
-    return this.makerService.create(createMakerDto);
-  }
-
   @Get()
-  findAll() {
-    return this.makerService.findAll();
+  @ApiOkResponse({ type: [VehicleMakeEntity] })
+  async findAll() {
+    const makers = await this.makerService.findAll();
+    return makers.map((make) => new VehicleMakeEntity(make));
   }
 
   @Get(':id')
+  @ApiOkResponse({ type: VehicleMakeEntity })
   findOne(@Param('id') id: string) {
-    return this.makerService.findOne(+id);
-  }
-
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateMakerDto: UpdateMakerDto) {
-    return this.makerService.update(+id, updateMakerDto);
-  }
-
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.makerService.remove(+id);
+    return this.makerService.findOne(id);
   }
 }
