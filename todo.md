@@ -17,7 +17,7 @@
 [x] Implementar cadastro da empresa
 [x] Cadastro de motoristas
 [x] Implementar autenticação e controle de acesso do tenant
-[] Cadastro de veículos
+[x] Cadastro de veículos
 [] Cadastro de locais estratégicos
 [] Layout cadastro empresa - menu tenant(dados da empresa, pagamento, cobranças, etc)
 [] Layout cadastro de controle de rotas

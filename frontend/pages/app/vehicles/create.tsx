@@ -9,6 +9,7 @@ import {
   FormInputMask,
   SelectInput,
 } from "../../../components";
+import { GoBackButton } from "../../../components/button/go-back-button";
 import { useGet, useGetDependent } from "../../../hooks/useGet";
 import { api } from "../../../lib/axios/apiClient";
 import { setEmptyOrStr } from "../../../lib/lodash";
@@ -103,13 +104,9 @@ export function CreateVehicle() {
 
   return (
     <>
-      <div className="pb-5 ">
-        <h2 className="text-xl leading-6 font-bold text-gray-900">
-          Cadastrar Veículo
-        </h2>
-      </div>
+      <GoBackButton />
       <form
-        className="space-y-6"
+        className="space-y-6 mt-4"
         onSubmit={handleSubmit(onSubmit)}
         autoComplete="off"
       >
@@ -117,7 +114,7 @@ export function CreateVehicle() {
           <div className="md:grid md:grid-cols-3 md:gap-6">
             <div className="md:col-span-1">
               <h3 className="text-lg font-medium leading-6 text-gray-900">
-                Identificação do Veículo
+                Cadastro de Veículo
               </h3>
               <p className="text-sm text-gray-500">
                 Comece informando a placa, para verificar se o veículo já está
