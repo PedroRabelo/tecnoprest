@@ -19,6 +19,7 @@ import { CurrentTenant } from 'src/auth/decorators/current-tenant.decorator';
 import { ApiPageResponse } from 'src/page/api-page-response.decorator';
 import { ConnectionArgs } from 'src/page/connection-args.dto';
 import { Page } from 'src/page/page.dto';
+import { TrackersService } from 'src/trackers/trackers.service';
 import { CreateVehicleDto } from './dto/create-vehicle.dto';
 import { UpdateVehicleDto } from './dto/update-vehicle.dto';
 import { VehicleEntity } from './entities/vehicle.entity';
@@ -29,7 +30,10 @@ import { VehiclesService } from './vehicles.service';
 @ApiExtraModels(Page)
 @ApiBearerAuth()
 export class VehiclesController {
-  constructor(private readonly vehiclesService: VehiclesService) {}
+  constructor(
+    private readonly vehiclesService: VehiclesService,
+    private readonly trackerService: TrackersService,
+  ) {}
 
   @Post()
   @ApiCreatedResponse({ type: VehicleEntity })
@@ -53,10 +57,16 @@ export class VehiclesController {
 
   @Get(':licensePlate')
   @ApiOkResponse({ type: [VehicleEntity] })
-  async findOne(@Param('licensePlate') licensePlate: string) {
+  async findOneByLicensePlate(@Param('licensePlate') licensePlate: string) {
     return new VehicleEntity(
       await this.vehiclesService.findOneByLicensePlate(licensePlate),
     );
+  }
+
+  @Get('get/:id')
+  @ApiOkResponse({ type: [VehicleEntity] })
+  async findOneById(@Param('id') id: string) {
+    return new VehicleEntity(await this.vehiclesService.findOneById(id));
   }
 
   @Patch(':id')
@@ -77,6 +87,6 @@ export class VehiclesController {
   @Get(':id/trackers')
   @ApiOkResponse({ type: [VehicleEntity] })
   async findVehicleTrackers(@Param('id') id: string) {
-    return await this.vehiclesService.findVehicleTrackers(id);
+    return await this.trackerService.findVehicleTrackers(id);
   }
 }

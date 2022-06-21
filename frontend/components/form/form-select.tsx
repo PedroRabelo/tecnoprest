@@ -20,6 +20,7 @@ export type InputSize = "medium" | "large";
 export type FormSelectProps<TFormValues> = {
   id: string;
   name: Path<TFormValues>;
+  value?: "id" | "name";
   size?: InputSize;
   options: { id: string; name: string }[];
   className?: string;
@@ -40,6 +41,7 @@ const sizeMap: { [key in InputSize]: string } = {
 export const SelectInput = <TFormValues extends Record<string, unknown>>({
   id,
   name,
+  value,
   size,
   options,
   register,
@@ -73,7 +75,10 @@ export const SelectInput = <TFormValues extends Record<string, unknown>>({
         <option></option>
         {options?.length > 0 &&
           options.map((option) => (
-            <option key={option.id} value={option.id}>
+            <option
+              key={option.id}
+              value={value === "id" ? option.id : option.name}
+            >
               {option.name}
             </option>
           ))}

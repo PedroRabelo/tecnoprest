@@ -6,7 +6,7 @@ import {
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
-import { Button, Pagination } from "../../../components";
+import { Pagination } from "../../../components";
 import Alert from "../../../components/alert/alert";
 import { DataTableHeader } from "../../../components/data-table";
 import { useGet } from "../../../hooks/useGet";
@@ -112,7 +112,9 @@ export function Vehicles() {
                                     />
                                   </a>
                                 </Link>
-                                <Link href="/app/vehicles/trackers">
+                                <Link
+                                  href={`/app/vehicles/${vehicle.id}/trackers`}
+                                >
                                   <a
                                     className="text-indigo-600 hover:text-indigo-900 mr-3"
                                     placeholder="Vincular Rastreador"

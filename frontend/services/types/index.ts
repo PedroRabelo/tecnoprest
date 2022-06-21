@@ -34,3 +34,14 @@ export const driverLicenseCategories = [
     name: "C",
   },
 ];
+
+export const trackerTechnologies = [
+  {
+    id: "1",
+    name: "Autotrac",
+  },
+  {
+    id: "2",
+    name: "Trakki",
+  },
+];

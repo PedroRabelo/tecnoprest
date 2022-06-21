@@ -29,6 +29,20 @@ export class TrackersService {
     return `This action removes a #${id} tracker`;
   }
 
+  findVehicleTrackers(vehicleId: string) {
+    return this.prisma.tracker.findMany({
+      where: {
+        vehicleId,
+      },
+      select: {
+        id: true,
+        trackNumber: true,
+        technology: true,
+        active: true,
+      },
+    });
+  }
+
   async updateTrackerVehicle(
     vehicleId: string,
     createTrackerDto: CreateTrackerDto,

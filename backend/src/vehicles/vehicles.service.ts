@@ -95,6 +95,38 @@ export class VehiclesService {
     return this.prisma.vehicle.findUnique({ where: { licensePlate } });
   }
 
+  findOneById(id: string) {
+    return this.prisma.vehicle.findUnique({
+      where: { id },
+      select: {
+        id: true,
+        licensePlate: true,
+        createdYear: true,
+        modelYear: true,
+        chassi: true,
+        renavan: true,
+        owner: true,
+        ownerCpf: true,
+        active: true,
+        make: {
+          select: {
+            name: true,
+          },
+        },
+        model: {
+          select: {
+            name: true,
+          },
+        },
+        category: {
+          select: {
+            name: true,
+          },
+        },
+      },
+    });
+  }
+
   update(id: string, updateVehicleDto: UpdateVehicleDto) {
     return this.prisma.vehicle.update({
       where: { id: id },
@@ -104,23 +136,5 @@ export class VehiclesService {
 
   remove(id: string) {
     return this.prisma.vehicle.delete({ where: { id: id } });
-  }
-
-  findVehicleTrackers(id: string) {
-    return this.prisma.vehicle.findMany({
-      where: {
-        id,
-      },
-      select: {
-        licensePlate: true,
-        trackers: {
-          select: {
-            id: true,
-            trackNumber: true,
-            technology: true,
-          },
-        },
-      },
-    });
   }
 }
