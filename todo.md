@@ -31,7 +31,7 @@
 ### FRONT-END
 [x] Configurar máscaras dos componentes
 [x] Salvar formulário no banco
-[] Validações de formulário
+[x] Validações de formulário
 [] Configurar paginação
 [] Toast de alerta de sucesso/erro
 

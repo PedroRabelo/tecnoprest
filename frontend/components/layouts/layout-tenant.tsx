@@ -13,6 +13,7 @@ import {
 } from "@heroicons/react/outline";
 import { SearchIcon } from "@heroicons/react/solid";
 import Image from "next/image";
+import Link from "next/link";
 import { Fragment, useContext, useState } from "react";
 import { AuthContext, signOut } from "../../contexts/auth-context";
 import { LinkMenu } from "../link-menu";
@@ -26,12 +27,18 @@ const navigation = [
     current: false,
   },
   {
+    name: "Locais Estratégicos",
+    href: "/app/map-locations",
+    icon: LocationMarkerIcon,
+    current: false,
+  },
+  { name: "Veículos", href: "/app/vehicles", icon: TruckIcon, current: false },
+  {
     name: "Motoristas",
     href: "/app/drivers",
     icon: UserGroupIcon,
     current: false,
   },
-  { name: "Veículos", href: "/app/vehicles", icon: TruckIcon, current: false },
   { name: "Manutenção", href: "#", icon: CogIcon, current: false },
   { name: "Controle de Rotas", href: "#", icon: MapIcon, current: false },
   { name: "Rastreamento", href: "#", icon: LocationMarkerIcon, current: false },
@@ -248,16 +255,17 @@ export function LayoutTenant({ children }: Props) {
                       ))}
                       <Menu.Item>
                         {({ active }) => (
-                          <a
-                            href="/"
-                            className={classNames(
-                              active ? "bg-gray-100" : "",
-                              "block px-4 py-2 text-sm text-gray-700"
-                            )}
-                            onClick={handleSignOut}
-                          >
-                            Sair
-                          </a>
+                          <Link href="/">
+                            <a
+                              className={classNames(
+                                active ? "bg-gray-100" : "",
+                                "block px-4 py-2 text-sm text-gray-700"
+                              )}
+                              onClick={handleSignOut}
+                            >
+                              Sair
+                            </a>
+                          </Link>
                         )}
                       </Menu.Item>
                     </Menu.Items>

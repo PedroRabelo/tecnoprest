@@ -20,7 +20,7 @@ export function DataTableHeader({ title, link }: Props) {
               type="button"
               title="Novo"
               icon={PlusIcon}
-              style="primary"
+              color="primary"
             />
           </a>
         </Link>

@@ -10,6 +10,7 @@ import { TenantsModule } from './tenants/tenants.module';
 import { DriversModule } from './drivers/drivers.module';
 import { VehiclesModule } from './vehicles/vehicles.module';
 import { TrackersModule } from './trackers/trackers.module';
+import { MapLocationsModule } from './map-locations/map-locations.module';
 
 @Module({
   imports: [
@@ -20,6 +21,7 @@ import { TrackersModule } from './trackers/trackers.module';
     DriversModule,
     VehiclesModule,
     TrackersModule,
+    MapLocationsModule,
   ],
   controllers: [AppController],
   providers: [

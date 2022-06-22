@@ -182,9 +182,11 @@ model TenantMapLocation {
   updatedAt DateTime @updatedAt
   active    Boolean  @default(true)
 
-  title String
-  lat   String[]
-  long  String[]
+  title       String
+  type        LocationType
+  lat         String[]
+  long        String[]
+  description String?
 
   tenant   Tenant @relation(fields: [tenantId], references: [id])
   tenantId String
@@ -197,4 +199,9 @@ enum Role {
   ADMIN
   ADMIN_TENANT
   USER_TENANT
+}
+
+enum LocationType {
+  MATRIZ
+  FILIAL
 }
