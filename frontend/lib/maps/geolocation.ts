@@ -1,9 +1,9 @@
 export function getCurrentPosition(
   options?: PositionOptions
-): Promise<{ lat: number; lng: number }> {
+): Promise<google.maps.LatLngLiteral> {
   return new Promise((resolve, reject) => {
     navigator.geolocation.getCurrentPosition(
-      (position) =>
+      (position: GeolocationPosition) =>
         resolve({
           lat: position.coords.latitude,
           lng: position.coords.longitude,

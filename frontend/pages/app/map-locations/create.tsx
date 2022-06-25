@@ -1,34 +1,63 @@
 import { Dialog, Transition } from "@headlessui/react";
 import { ChevronDoubleLeftIcon, XIcon } from "@heroicons/react/outline";
-import { Fragment, useEffect, useRef, useState } from "react";
+import { Fragment, useRef, useState } from "react";
 import { Button } from "../../../components";
 import { GoBackButton } from "../../../components/button/go-back-button";
-import { Map } from "../../../lib/maps/map";
-import { Loader } from "google-maps";
-import { getCurrentPosition } from "../../../lib/maps/geolocation";
 
-const googleMapsLoader = new Loader(process.env.NEXT_PUBLIC_GOOGLE_API_KEY);
+import { Status, Wrapper } from "@googlemaps/react-wrapper";
+import { Drawing, Map } from "../../../components/map";
+import { Marker } from "../../../components/map/marker";
+
+const render = (status: Status) => {
+  switch (status) {
+    case Status.LOADING:
+      return <h1>Carregando</h1>;
+    case Status.FAILURE:
+      return <h1>Erro</h1>;
+    case Status.SUCCESS:
+      return <CreateMapLocation />;
+  }
+};
+
+type Bound = {
+  lat: string;
+  lng: string;
+};
 
 export function CreateMapLocation() {
-  const [open, setOpen] = useState(true);
+  const [open, setOpen] = useState(false);
+  const [zoom, setZoom] = useState(4); // initial zoom
+  const [center, setCenter] = useState<google.maps.LatLngLiteral>({
+    lat: -9.148933007262677,
+    lng: -56.041542722767474,
+  });
+  const [clicks, setClicks] = useState<google.maps.LatLng[]>([]);
+  const [bounds, setBounds] = useState<Bound[]>();
 
-  const mapRef = useRef<Map>();
+  const onClick = (e: google.maps.MapMouseEvent) => {
+    // avoid directly mutating state
+    setClicks([...clicks, e.latLng!]);
+  };
 
-  useEffect(() => {
-    (async () => {
-      const [, position] = await Promise.all([
-        googleMapsLoader.load(),
-        getCurrentPosition({ enableHighAccuracy: true }),
-      ]);
-      const divMap = document.getElementById("map") as HTMLElement;
-      mapRef.current = new Map(divMap, {
-        zoom: 15,
-        center: position,
-        fullscreenControl: false,
-        streetViewControl: false,
-      });
-    })();
-  }, []);
+  const onIdle = (m: google.maps.Map) => {
+    console.log("onIdle");
+    setZoom(m.getZoom()!);
+    setCenter(m.getCenter()!.toJSON());
+  };
+
+  const onPolygonComplete = (polygon: google.maps.Polygon) => {
+    var polygonBounds = polygon.getPath();
+    var bounds: Bound[] = [];
+    for (var i = 0; i < polygonBounds.getLength(); i++) {
+      var point: Bound = {
+        lat: polygonBounds.getAt(i).lat().toString(),
+        lng: polygonBounds.getAt(i).lng().toString(),
+      };
+      bounds.push(point);
+    }
+
+    setBounds(bounds);
+  };
 
   return (
     <>
@@ -123,6 +152,15 @@ export function CreateMapLocation() {
                                   />
                                 </div>
                               </div>
+                              <div className="p-4 flex flex-col">
+                                {bounds?.map((item) => {
+                                  return (
+                                    <span key={item.lat}>
+                                      lat: {item.lat} long: {item.lng}
+                                    </span>
+                                  );
+                                })}
+                              </div>
                             </div>
                           </div>
                         </div>
@@ -152,7 +190,26 @@ export function CreateMapLocation() {
       </Transition.Root>
 
       <div className="flex h-[78vh] pt-4">
-        <div id="map" className="flex-1" />
+        <Wrapper
+          apiKey={process.env.NEXT_PUBLIC_GOOGLE_API_KEY!}
+          render={render}
+          libraries={["drawing"]}
+        >
+          <Map
+            center={center}
+            onIdle={onIdle}
+            onClick={onClick}
+            zoom={zoom}
+            streetViewControl={false}
+            fullscreenControl={false}
+            style={{ flexGrow: "1", height: "100%" }}
+          >
+            {clicks.map((latLng, i) => (
+              <Marker key={i} position={latLng} />
+            ))}
+            <Drawing onPolygonComplete={onPolygonComplete} />
+          </Map>
+        </Wrapper>
       </div>
     </>
   );
