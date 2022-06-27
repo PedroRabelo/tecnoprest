@@ -1,12 +1,20 @@
 import { Dialog, Transition } from "@headlessui/react";
 import { ChevronDoubleLeftIcon, XIcon } from "@heroicons/react/outline";
 import { Fragment, useRef, useState } from "react";
-import { Button } from "../../../components";
+import { Button, FormInput, SelectInput } from "../../../components";
 import { GoBackButton } from "../../../components/button/go-back-button";
 
 import { Status, Wrapper } from "@googlemaps/react-wrapper";
 import { Drawing, Map } from "../../../components/map";
 import { Marker } from "../../../components/map/marker";
+import * as yup from "yup";
+import { SubmitHandler, useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { api } from "../../../lib/axios/apiClient";
+import { useRouter } from "next/router";
+import { TextAreaInput } from "../../../components/form/form-textarea";
+import { setEmptyOrStr } from "../../../lib/lodash";
+import { mapLocationType } from "../../../services/types";
 
 const render = (status: Status) => {
   switch (status) {
@@ -24,7 +32,24 @@ type Bound = {
   lng: string;
 };
 
+type NewMapLocationForm = {
+  title: string;
+  type: string;
+  description: string;
+  lat: string[];
+  long: string[];
+};
+
+const requiredText = "Campo obrigatório";
+
+const mapLocationSchema = yup.object({
+  title: yup.string().required(requiredText),
+  type: yup.string().required(requiredText),
+});
+
 export function CreateMapLocation() {
+  const router = useRouter();
+
   const [open, setOpen] = useState(false);
   const [zoom, setZoom] = useState(4); // initial zoom
   const [center, setCenter] = useState<google.maps.LatLngLiteral>({
@@ -33,6 +58,17 @@ export function CreateMapLocation() {
   });
   const [clicks, setClicks] = useState<google.maps.LatLng[]>([]);
   const [bounds, setBounds] = useState<Bound[]>();
+
+  const {
+    register,
+    handleSubmit,
+    control,
+    setFocus,
+    formState: { errors },
+    setValue,
+  } = useForm<NewMapLocationForm>({
+    resolver: yupResolver(mapLocationSchema),
+  });
 
   const onClick = (e: google.maps.MapMouseEvent) => {
     // avoid directly mutating state
@@ -57,6 +93,32 @@ export function CreateMapLocation() {
     }
 
     setBounds(bounds);
+    setOpen(true);
+  };
+
+  const onSubmit: SubmitHandler<NewMapLocationForm> = async (data) => {
+    if (!bounds) {
+      alert("Informe uma posição no mapa");
+      return;
+    }
+
+    data.lat = [];
+    data.long = [];
+    await bounds.map((position) => {
+      data.lat.push(position.lat);
+      data.long.push(position.lng);
+    });
+
+    await api
+      .post("/map-locations", data)
+      .then(() => {
+        alert("Salvo com sucesso");
+        router.push("/app/map-locations");
+      })
+      .catch((e) => {
+        console.log(e.response.data.message);
+        alert(e.message);
+      });
   };
 
   return (
@@ -88,13 +150,17 @@ export function CreateMapLocation() {
                   leaveTo="translate-x-full"
                 >
                   <Dialog.Panel className="pointer-events-auto w-screen max-w-md">
-                    <form className="flex h-full flex-col divide-y divide-gray-200 bg-white shadow-xl">
+                    <form
+                      onSubmit={handleSubmit(onSubmit)}
+                      autoComplete="off"
+                      className="flex h-full flex-col divide-y divide-gray-200 bg-white shadow-xl"
+                    >
                       <div className="h-0 flex-1 overflow-y-auto">
                         <div className="bg-indigo-700 py-6 px-4 sm:px-6">
                           <div className="flex items-center justify-between">
                             <Dialog.Title className="text-lg font-medium text-white">
                               {" "}
-                              New Project{" "}
+                              Informações do Local{" "}
                             </Dialog.Title>
                             <div className="ml-3 flex h-7 items-center">
                               <button
@@ -109,8 +175,7 @@ export function CreateMapLocation() {
                           </div>
                           <div className="mt-1">
                             <p className="text-sm text-indigo-300">
-                              Get started by filling in the information below to
-                              create your new project.
+                              Preencha os campos abaixo.
                             </p>
                           </div>
                         </div>
@@ -120,17 +185,54 @@ export function CreateMapLocation() {
                               <div>
                                 <label
                                   htmlFor="project-name"
+                                  className="block text-sm font-medium mb-1 text-gray-900"
+                                >
+                                  Título
+                                </label>
+                                <FormInput<NewMapLocationForm>
+                                  id="title"
+                                  type="text"
+                                  name="title"
+                                  label="Título"
+                                  className="mb-2"
+                                  register={register}
+                                  errors={errors}
+                                />
+                              </div>
+                              <div>
+                                <label
+                                  htmlFor="project-name"
+                                  className="block text-sm font-medium mb-1 text-gray-900"
+                                >
+                                  Tipo
+                                </label>
+                                <SelectInput<NewMapLocationForm>
+                                  id="type"
+                                  name="type"
+                                  options={mapLocationType}
+                                  className="mb-2"
+                                  register={register}
+                                  errors={errors}
+                                  rules={{
+                                    required: false,
+                                    setValueAs: setEmptyOrStr,
+                                  }}
+                                />
+                              </div>
+                              <div>
+                                <label
+                                  htmlFor="description"
                                   className="block text-sm font-medium text-gray-900"
                                 >
-                                  {" "}
-                                  Project name{" "}
+                                  Descrição
                                 </label>
                                 <div className="mt-1">
-                                  <input
-                                    type="text"
-                                    name="project-name"
-                                    id="project-name"
-                                    className="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                                  <TextAreaInput<NewMapLocationForm>
+                                    id="description"
+                                    name="description"
+                                    className="mb-2"
+                                    register={register}
+                                    errors={errors}
                                   />
                                 </div>
                               </div>
@@ -139,20 +241,8 @@ export function CreateMapLocation() {
                                   htmlFor="description"
                                   className="block text-sm font-medium text-gray-900"
                                 >
-                                  {" "}
-                                  Description{" "}
+                                  Posições
                                 </label>
-                                <div className="mt-1">
-                                  <textarea
-                                    id="description"
-                                    name="description"
-                                    rows={4}
-                                    className="block w-full rounded-md border border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-                                    defaultValue={""}
-                                  />
-                                </div>
-                              </div>
-                              <div className="p-4 flex flex-col">
                                 {bounds?.map((item) => {
                                   return (
                                     <span key={item.lat}>

@@ -45,3 +45,14 @@ export const trackerTechnologies = [
     name: "Trakki",
   },
 ];
+
+export const mapLocationType = [
+  {
+    id: "1",
+    name: "MATRIZ",
+  },
+  {
+    id: "2",
+    name: "FILIAL",
+  },
+];

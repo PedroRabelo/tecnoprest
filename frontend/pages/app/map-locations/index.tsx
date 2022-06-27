@@ -1,15 +1,14 @@
 import { MapIcon, PencilAltIcon, TrashIcon } from "@heroicons/react/outline";
 import Link from "next/link";
-import { useRouter } from "next/router";
 import Alert from "../../../components/alert/alert";
 import { DataTableHeader } from "../../../components/data-table";
 import { useGet } from "../../../hooks/useGet";
 import { MapLocation } from "../../../services/types/MapLocation";
 
 export function MapLocations() {
-  const router = useRouter();
-
   const { data } = useGet("/map-locations");
+
+  console.log(data);
 
   return (
     <div className="px-4 sm:px-6 lg:px-8">
@@ -56,67 +55,63 @@ export function MapLocations() {
                   </thead>
                   <tbody className="bg-white">
                     {data &&
-                      data?.nodes?.map(
-                        (location: MapLocation, index: number) => (
-                          <tr
-                            key={location?.id}
-                            className={
-                              index % 2 === 0 ? undefined : "bg-gray-50"
-                            }
-                          >
-                            <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6">
-                              {location?.title}
-                            </td>
-                            <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                              {location.type}
-                            </td>
-                            <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                              {location.active ? (
-                                <span className="inline-flex items-center px-3 py-0.5 rounded-full text-sm font-medium bg-green-100 text-green-800">
-                                  Ativo
-                                </span>
-                              ) : (
-                                <span className="inline-flex items-center px-3 py-0.5 rounded-full text-sm font-medium bg-red-100 text-red-800">
-                                  Inativo
-                                </span>
-                              )}
-                            </td>
-                            <td className="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6">
-                              <div className="flex justify-end">
-                                <Link href="#">
-                                  <a className="text-indigo-600 hover:text-indigo-900 mr-3">
-                                    <PencilAltIcon
-                                      className="-ml-1 mr-2 h-5 w-5"
-                                      aria-hidden="true"
-                                    />
-                                  </a>
-                                </Link>
-                                <Link
-                                  href={`/app/vehicles/${location.id}/trackers`}
+                      data?.map((location: MapLocation, index: number) => (
+                        <tr
+                          key={location?.id}
+                          className={index % 2 === 0 ? undefined : "bg-gray-50"}
+                        >
+                          <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6">
+                            {location?.title}
+                          </td>
+                          <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+                            {location.type}
+                          </td>
+                          <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+                            {location.active ? (
+                              <span className="inline-flex items-center px-3 py-0.5 rounded-full text-sm font-medium bg-green-100 text-green-800">
+                                Ativo
+                              </span>
+                            ) : (
+                              <span className="inline-flex items-center px-3 py-0.5 rounded-full text-sm font-medium bg-red-100 text-red-800">
+                                Inativo
+                              </span>
+                            )}
+                          </td>
+                          <td className="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6">
+                            <div className="flex justify-end">
+                              <Link href="#">
+                                <a className="text-indigo-600 hover:text-indigo-900 mr-3">
+                                  <PencilAltIcon
+                                    className="-ml-1 mr-2 h-5 w-5"
+                                    aria-hidden="true"
+                                  />
+                                </a>
+                              </Link>
+                              <Link
+                                href={`/app/vehicles/${location.id}/trackers`}
+                              >
+                                <a
+                                  className="text-indigo-600 hover:text-indigo-900 mr-3"
+                                  placeholder="Vincular Rastreador"
                                 >
-                                  <a
-                                    className="text-indigo-600 hover:text-indigo-900 mr-3"
-                                    placeholder="Vincular Rastreador"
-                                  >
-                                    <MapIcon
-                                      className="-ml-1 mr-2 h-5 w-5"
-                                      aria-hidden="true"
-                                    />
-                                  </a>
-                                </Link>
-                                <Link href="#">
-                                  <a className="text-red-600 hover:text-red-900">
-                                    <TrashIcon
-                                      className="-ml-1 mr-2 h-5 w-5"
-                                      aria-hidden="true"
-                                    />
-                                  </a>
-                                </Link>
-                              </div>
-                            </td>
-                          </tr>
-                        )
-                      )}
+                                  <MapIcon
+                                    className="-ml-1 mr-2 h-5 w-5"
+                                    aria-hidden="true"
+                                  />
+                                </a>
+                              </Link>
+                              <Link href="#">
+                                <a className="text-red-600 hover:text-red-900">
+                                  <TrashIcon
+                                    className="-ml-1 mr-2 h-5 w-5"
+                                    aria-hidden="true"
+                                  />
+                                </a>
+                              </Link>
+                            </div>
+                          </td>
+                        </tr>
+                      ))}
                   </tbody>
                 </table>
               </div>

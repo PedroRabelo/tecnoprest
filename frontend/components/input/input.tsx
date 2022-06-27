@@ -41,6 +41,7 @@ export const Input: FC<InputProps> = forwardRef<HTMLInputElement, InputProps>(
       size = "medium",
       className = "",
       placeholder,
+
       ...props
     },
     ref

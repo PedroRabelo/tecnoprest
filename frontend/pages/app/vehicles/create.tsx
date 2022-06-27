@@ -339,7 +339,7 @@ export function CreateVehicle() {
         </div>
 
         <div className="flex justify-end gap-4">
-          <Button title="Salvar" style="primary" type="submit" />
+          <Button title="Salvar" color="primary" type="submit" />
         </div>
       </form>
     </>
