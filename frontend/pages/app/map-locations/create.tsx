@@ -56,23 +56,23 @@ export function CreateMapLocation() {
     lat: -9.148933007262677,
     lng: -56.041542722767474,
   });
-  const [clicks, setClicks] = useState<google.maps.LatLng[]>([]);
+  const [marker, setMarker] = useState<google.maps.LatLng>();
   const [bounds, setBounds] = useState<Bound[]>();
 
   const {
     register,
     handleSubmit,
-    control,
-    setFocus,
     formState: { errors },
-    setValue,
   } = useForm<NewMapLocationForm>({
     resolver: yupResolver(mapLocationSchema),
   });
 
   const onClick = (e: google.maps.MapMouseEvent) => {
     // avoid directly mutating state
-    setClicks([...clicks, e.latLng!]);
+    setMarker(e.latLng!);
+    setOpen(true);
+
+    console.log(e.latLng?.toJSON());
   };
 
   const onIdle = (m: google.maps.Map) => {
@@ -104,7 +104,7 @@ export function CreateMapLocation() {
 
     data.lat = [];
     data.long = [];
-    await bounds.map((position) => {
+    bounds.map((position) => {
       data.lat.push(position.lat);
       data.long.push(position.lng);
     });
@@ -122,7 +122,7 @@ export function CreateMapLocation() {
   };
 
   return (
-    <>
+    <div>
       <div className="flex justify-between">
         <GoBackButton />
         <Button
@@ -250,6 +250,11 @@ export function CreateMapLocation() {
                                     </span>
                                   );
                                 })}
+
+                                <span>
+                                  {marker?.lat().toString()} -{" "}
+                                  {marker?.lng().toString()}
+                                </span>
                               </div>
                             </div>
                           </div>
@@ -294,14 +299,13 @@ export function CreateMapLocation() {
             fullscreenControl={false}
             style={{ flexGrow: "1", height: "100%" }}
           >
-            {clicks.map((latLng, i) => (
-              <Marker key={i} position={latLng} />
-            ))}
+            <Marker position={marker} />
+
             <Drawing onPolygonComplete={onPolygonComplete} />
           </Map>
         </Wrapper>
       </div>
-    </>
+    </div>
   );
 }
 

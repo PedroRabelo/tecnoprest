@@ -5,7 +5,8 @@
 [x] CRUD User
 [x] CRUD Veículo
 [x] Vincular veículo a um rastreador
-[] Cadastrar locais estratégicos
+[x] Cadastrar locais estratégicos
+[] Cadastrar rotas
 
 ## FRONT-END
 
@@ -18,12 +19,12 @@
 [x] Cadastro de motoristas
 [x] Implementar autenticação e controle de acesso do tenant
 [x] Cadastro de veículos
-[] Cadastro de locais estratégicos
-[] Layout cadastro empresa - menu tenant(dados da empresa, pagamento, cobranças, etc)
+[x] Cadastro de locais estratégicos
 [] Layout cadastro de controle de rotas
 [] Layout cadastro rastreamento
 [] Implementar cadastro de novo usuário da empresa(tenant) - (CNPJ, E-mail, código, senha)
 [] Implementar cadastro de usuário
+[] Layout cadastro empresa - menu tenant(dados da empresa, pagamento, cobranças, etc)
 [] Implementar internacionalização
 
 ## TASKS
@@ -32,6 +33,10 @@
 [x] Configurar máscaras dos componentes
 [x] Salvar formulário no banco
 [x] Validações de formulário
+[] Melhorias na tela de Locais estratégicos
+  [] Barra de ferramentas para selecionar tipo de local(Ponto ou Polígono)
+  [] Configurar o Marker(maps)
+  [] Campo para pesquisar por local(place-goole-maps)
 [] Configurar paginação
 [] Toast de alerta de sucesso/erro
 

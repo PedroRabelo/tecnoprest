@@ -4,7 +4,7 @@ import { useEffect } from "react";
 import { Pagination } from "../../../components";
 import Alert from "../../../components/alert/alert";
 import { DataTableHeader } from "../../../components/data-table";
-import useGet from "../../../hooks/useGet";
+import { useGet } from "../../../hooks/useGet";
 import { Tenant } from "../../../services/types/Tenant";
 
 export function Clients() {

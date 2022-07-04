@@ -134,7 +134,7 @@ export default function Trackers() {
                   <div className="flex justify-start mt-6">
                     <Button
                       title="Adicionar"
-                      style="primary"
+                      color="primary"
                       type="submit"
                       icon={PlusIcon}
                     />
