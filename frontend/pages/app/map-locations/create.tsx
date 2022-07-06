@@ -1,6 +1,6 @@
-import { Dialog, Transition } from "@headlessui/react";
+import { Dialog, RadioGroup, Transition } from "@headlessui/react";
 import { ChevronDoubleLeftIcon, XIcon } from "@heroicons/react/outline";
-import { Fragment, useRef, useState } from "react";
+import { Fragment, useEffect, useRef, useState } from "react";
 import { Button, FormInput, SelectInput } from "../../../components";
 import { GoBackButton } from "../../../components/button/go-back-button";
 
@@ -15,6 +15,7 @@ import { useRouter } from "next/router";
 import { TextAreaInput } from "../../../components/form/form-textarea";
 import { setEmptyOrStr } from "../../../lib/lodash";
 import { mapLocationType } from "../../../services/types";
+import { PlacesAutocomplete } from "../../../components/map/places-autocomplete";
 
 const render = (status: Status) => {
   switch (status) {
@@ -47,6 +48,12 @@ const mapLocationSchema = yup.object({
   type: yup.string().required(requiredText),
 });
 
+const placeType = [{ name: "Ponto" }, { name: "Polígono" }];
+
+function classNames(...classes: string[]) {
+  return classes.filter(Boolean).join(" ");
+}
+
 export function CreateMapLocation() {
   const router = useRouter();
 
@@ -56,8 +63,11 @@ export function CreateMapLocation() {
     lat: -9.148933007262677,
     lng: -56.041542722767474,
   });
-  const [marker, setMarker] = useState<google.maps.LatLng>();
+  const [polygon, setPolygon] = useState<google.maps.Polygon>();
   const [bounds, setBounds] = useState<Bound[]>();
+  const [placeSelected, setPlaceSelected] =
+    useState<google.maps.LatLngLiteral>();
+  const [typeSelected, setTypeSelected] = useState(placeType[0]);
 
   const {
     register,
@@ -67,9 +77,27 @@ export function CreateMapLocation() {
     resolver: yupResolver(mapLocationSchema),
   });
 
+  useEffect(() => {
+    if (placeSelected) {
+      setCenter(placeSelected);
+      setZoom(14);
+    }
+  }, [placeSelected]);
+
+  useEffect(() => {
+    if (typeSelected === placeType[1]) {
+      setPlaceSelected(undefined);
+    }
+
+    if (typeSelected === placeType[0]) {
+      polygon?.setMap(null);
+      setBounds([]);
+    }
+  }, [typeSelected, polygon]);
+
   const onClick = (e: google.maps.MapMouseEvent) => {
     // avoid directly mutating state
-    setMarker(e.latLng!);
+    setPlaceSelected(e.latLng?.toJSON()!);
     setOpen(true);
 
     console.log(e.latLng?.toJSON());
@@ -82,6 +110,7 @@ export function CreateMapLocation() {
   };
 
   const onPolygonComplete = (polygon: google.maps.Polygon) => {
+    setPolygon(polygon);
     var polygonBounds = polygon.getPath();
     var bounds: Bound[] = [];
     for (var i = 0; i < polygonBounds.getLength(); i++) {
@@ -97,17 +126,24 @@ export function CreateMapLocation() {
   };
 
   const onSubmit: SubmitHandler<NewMapLocationForm> = async (data) => {
-    if (!bounds) {
+    if (!bounds && !placeSelected) {
       alert("Informe uma posição no mapa");
       return;
     }
 
     data.lat = [];
     data.long = [];
-    bounds.map((position) => {
-      data.lat.push(position.lat);
-      data.long.push(position.lng);
-    });
+    if (bounds) {
+      bounds.map((position) => {
+        data.lat.push(position.lat);
+        data.long.push(position.lng);
+      });
+    }
+
+    if (placeSelected) {
+      data.lat.push(placeSelected.lat.toString());
+      data.lat.push(placeSelected.lng.toString());
+    }
 
     await api
       .post("/map-locations", data)
@@ -124,14 +160,44 @@ export function CreateMapLocation() {
   return (
     <div>
       <div className="flex justify-between">
-        <GoBackButton />
-        <Button
-          title=""
-          icon={ChevronDoubleLeftIcon}
-          type="button"
-          color="primary"
-          onClick={() => setOpen(true)}
-        />
+        <div>
+          <GoBackButton />
+        </div>
+        <div>
+          <RadioGroup value={typeSelected} onChange={setTypeSelected}>
+            <RadioGroup.Label className="sr-only">
+              Escolha o tipo de local
+            </RadioGroup.Label>
+            <div className="grid grid-cols-2 gap-3">
+              {placeType.map((option) => (
+                <RadioGroup.Option
+                  key={option.name}
+                  value={option}
+                  className={({ active, checked }) =>
+                    classNames(
+                      active ? "ring-2 ring-offset-2 ring-indigo-500" : "",
+                      checked
+                        ? "bg-indigo-600 border-transparent text-white hover:bg-indigo-700"
+                        : "bg-white border-gray-200 text-gray-900 hover:bg-gray-50",
+                      "cursor-pointer focus:outline-none border rounded-md py-3 px-3 flex items-center justify-center text-sm font-medium uppercase sm:flex-1"
+                    )
+                  }
+                >
+                  <RadioGroup.Label as="span">{option.name}</RadioGroup.Label>
+                </RadioGroup.Option>
+              ))}
+            </div>
+          </RadioGroup>
+        </div>
+        <div>
+          <Button
+            title=""
+            icon={ChevronDoubleLeftIcon}
+            type="button"
+            color="primary"
+            onClick={() => setOpen(true)}
+          />
+        </div>
       </div>
       <Transition.Root show={open} as={Fragment}>
         <Dialog as="div" className="relative z-10" onClose={setOpen}>
@@ -252,8 +318,7 @@ export function CreateMapLocation() {
                                 })}
 
                                 <span>
-                                  {marker?.lat().toString()} -{" "}
-                                  {marker?.lng().toString()}
+                                  {placeSelected?.lat} - {placeSelected?.lng}
                                 </span>
                               </div>
                             </div>
@@ -288,7 +353,7 @@ export function CreateMapLocation() {
         <Wrapper
           apiKey={process.env.NEXT_PUBLIC_GOOGLE_API_KEY!}
           render={render}
-          libraries={["drawing"]}
+          libraries={["drawing", "places"]}
         >
           <Map
             center={center}
@@ -299,9 +364,17 @@ export function CreateMapLocation() {
             fullscreenControl={false}
             style={{ flexGrow: "1", height: "100%" }}
           >
-            <Marker position={marker} />
+            <div className="absolute m-4 w-72">
+              <PlacesAutocomplete setSelected={setPlaceSelected} />
+            </div>
 
-            <Drawing onPolygonComplete={onPolygonComplete} />
+            {typeSelected === placeType[0] && placeSelected && (
+              <Marker position={placeSelected} />
+            )}
+
+            {typeSelected === placeType[1] && (
+              <Drawing onPolygonComplete={onPolygonComplete} />
+            )}
           </Map>
         </Wrapper>
       </div>

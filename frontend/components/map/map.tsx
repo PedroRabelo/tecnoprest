@@ -35,7 +35,14 @@ export function Map({
   // see discussion in https://github.com/googlemaps/js-samples/issues/946
   useDeepCompareEffectForMaps(() => {
     if (map) {
-      map.setOptions(options);
+      const mapOptions: google.maps.MapOptions = {
+        mapTypeControlOptions: {
+          position: google.maps.ControlPosition.LEFT_BOTTOM,
+        },
+        ...options,
+      };
+
+      map.setOptions(mapOptions);
     }
   }, [map, options]);
 

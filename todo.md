@@ -34,9 +34,9 @@
 [x] Salvar formulário no banco
 [x] Validações de formulário
 [] Melhorias na tela de Locais estratégicos
-  [] Barra de ferramentas para selecionar tipo de local(Ponto ou Polígono)
+  [x] Barra de ferramentas para selecionar tipo de local(Ponto ou Polígono)
   [] Configurar o Marker(maps)
-  [] Campo para pesquisar por local(place-goole-maps)
+  [x] Campo para pesquisar por local(place-goole-maps)
 [] Configurar paginação
 [] Toast de alerta de sucesso/erro
 
