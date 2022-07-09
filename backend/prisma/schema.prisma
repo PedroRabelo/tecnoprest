@@ -187,6 +187,8 @@ model TenantMapLocation {
   lat         String[]
   long        String[]
   description String?
+  isRoute     Boolean      @default(false)
+  isPolygon   Boolean      @default(false)
 
   tenant   Tenant @relation(fields: [tenantId], references: [id])
   tenantId String
@@ -204,4 +206,7 @@ enum Role {
 enum LocationType {
   MATRIZ
   FILIAL
+  POSTO
+  OFICINA
+  PEDAGIO
 }

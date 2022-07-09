@@ -17,4 +17,10 @@ export class CreateMapLocationDto {
 
   @IsOptional()
   description: string;
+
+  @IsNotEmpty()
+  isRoute: boolean;
+
+  @IsNotEmpty()
+  isPolygon: boolean;
 }

@@ -1,11 +1,7 @@
 import { ErrorMessage } from "@hookform/error-message";
 import classNames from "classnames";
 import get from "lodash.get";
-import React, {
-  ChangeEventHandler,
-  DetailedHTMLProps,
-  SelectHTMLAttributes,
-} from "react";
+import React, { DetailedHTMLProps, SelectHTMLAttributes } from "react";
 import {
   DeepMap,
   FieldError,

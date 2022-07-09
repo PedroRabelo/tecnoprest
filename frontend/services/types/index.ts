@@ -55,4 +55,12 @@ export const mapLocationType = [
     id: "2",
     name: "FILIAL",
   },
+  {
+    id: "3",
+    name: "POSTO",
+  },
+  {
+    id: "4",
+    name: "OFICINA",
+  },
 ];

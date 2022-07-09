@@ -13,4 +13,6 @@ export class MapLocationEntity implements TenantMapLocation {
   @ApiProperty({ required: false })
   description: string;
   tenantId: string;
+  isRoute: boolean;
+  isPolygon: boolean;
 }

@@ -16,6 +16,7 @@ import { TextAreaInput } from "../../../components/form/form-textarea";
 import { setEmptyOrStr } from "../../../lib/lodash";
 import { mapLocationType } from "../../../services/types";
 import { PlacesAutocomplete } from "../../../components/map/places-autocomplete";
+import Toggle from "../../../components/toggle/toggle";
 
 const render = (status: Status) => {
   switch (status) {
@@ -39,6 +40,8 @@ type NewMapLocationForm = {
   description: string;
   lat: string[];
   long: string[];
+  isRoute: boolean;
+  isPolygon: boolean;
 };
 
 const requiredText = "Campo obrigatório";
@@ -58,6 +61,7 @@ export function CreateMapLocation() {
   const router = useRouter();
 
   const [open, setOpen] = useState(false);
+
   const [zoom, setZoom] = useState(4); // initial zoom
   const [center, setCenter] = useState<google.maps.LatLngLiteral>({
     lat: -9.148933007262677,
@@ -68,6 +72,8 @@ export function CreateMapLocation() {
   const [placeSelected, setPlaceSelected] =
     useState<google.maps.LatLngLiteral>();
   const [typeSelected, setTypeSelected] = useState(placeType[0]);
+
+  const [isRoute, setIsRoute] = useState(false);
 
   const {
     register,
@@ -99,8 +105,6 @@ export function CreateMapLocation() {
     // avoid directly mutating state
     setPlaceSelected(e.latLng?.toJSON()!);
     setOpen(true);
-
-    console.log(e.latLng?.toJSON());
   };
 
   const onIdle = (m: google.maps.Map) => {
@@ -142,8 +146,14 @@ export function CreateMapLocation() {
 
     if (placeSelected) {
       data.lat.push(placeSelected.lat.toString());
-      data.lat.push(placeSelected.lng.toString());
+      data.long.push(placeSelected.lng.toString());
     }
+
+    data = {
+      ...data,
+      isRoute,
+      isPolygon: typeSelected === placeType[1],
+    };
 
     await api
       .post("/map-locations", data)
@@ -303,23 +313,11 @@ export function CreateMapLocation() {
                                 </div>
                               </div>
                               <div>
-                                <label
-                                  htmlFor="description"
-                                  className="block text-sm font-medium text-gray-900"
-                                >
-                                  Posições
-                                </label>
-                                {bounds?.map((item) => {
-                                  return (
-                                    <span key={item.lat}>
-                                      lat: {item.lat} long: {item.lng}
-                                    </span>
-                                  );
-                                })}
-
-                                <span>
-                                  {placeSelected?.lat} - {placeSelected?.lng}
-                                </span>
+                                <Toggle
+                                  label="Exibir no controle de rotas?"
+                                  enabled={isRoute}
+                                  onChange={setIsRoute}
+                                />
                               </div>
                             </div>
                           </div>
