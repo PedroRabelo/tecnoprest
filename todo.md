@@ -33,10 +33,13 @@
 [x] Configurar máscaras dos componentes
 [x] Salvar formulário no banco
 [x] Validações de formulário
-[] Melhorias na tela de Locais estratégicos
+[x] Melhorias na tela de Locais estratégicos
   [x] Barra de ferramentas para selecionar tipo de local(Ponto ou Polígono)
   [x] Configurar o Marker(maps)
   [x] Campo para pesquisar por local(place-goole-maps)
+[] Editar locais estratégicos
+  [x] Carregar o ponto
+  [] Carregar o polígono 
 [] Configurar paginação
 [] Toast de alerta de sucesso/erro
 

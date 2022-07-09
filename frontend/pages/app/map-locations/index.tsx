@@ -79,7 +79,7 @@ export function MapLocations() {
                           <td className="relative whitespace-nowrap py-3 pl-2 pr-2 text-right text-sm font-medium sm:pr-6">
                             <div className="flex justify-end gap-4">
                               <DataTableActions
-                                href="#"
+                                href={`/app/map-locations/${location.id}/edit`}
                                 Icon={PencilAltIcon}
                                 color="primary"
                                 title="Editar"
