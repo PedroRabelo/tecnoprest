@@ -1,7 +1,6 @@
 import Router from "next/router";
 import { destroyCookie, parseCookies, setCookie } from "nookies";
 import { createContext, ReactNode, useEffect, useState } from "react";
-import useGet from "../hooks/useGet";
 import { api } from "../lib/axios/apiClient";
 
 type User = {

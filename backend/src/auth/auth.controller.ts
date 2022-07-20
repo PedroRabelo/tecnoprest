@@ -36,12 +36,19 @@ export class AuthController {
   @Get('me')
   @ApiBearerAuth()
   async getCurrentUser(@CurrentUser() user: UserEntity) {
-    const tenant: TenantEntity = await this.tenantService.findOne(
-      user.tenantId,
-    );
+    if (user.tenantId) {
+      const tenant: TenantEntity = await this.tenantService.findOne(
+        user.tenantId,
+      );
+
+      return {
+        ...user,
+        slug: tenant?.slug,
+      };
+    }
+
     return {
       ...user,
-      slug: tenant?.slug,
     };
   }
 }
