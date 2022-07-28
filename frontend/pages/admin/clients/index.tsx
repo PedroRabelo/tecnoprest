@@ -8,16 +8,7 @@ import { useGet } from "../../../hooks/useGet";
 import { Tenant } from "../../../services/types/Tenant";
 
 export function Clients() {
-  const router = useRouter();
   const { data } = useGet("/tenants/page");
-
-  useEffect(() => {
-    if (data && router) {
-      if (data.nodes.length === 0) {
-        router.push(`/admin/clients`);
-      }
-    }
-  }, [data, router]);
 
   return (
     <div className="px-4 sm:px-6 lg:px-8">

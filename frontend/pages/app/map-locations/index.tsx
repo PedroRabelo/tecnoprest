@@ -84,12 +84,7 @@ export function MapLocations() {
                                 color="primary"
                                 title="Editar"
                               />
-                              <DataTableActions
-                                href="#"
-                                Icon={MapIcon}
-                                color="primary"
-                                title="Mapa"
-                              />
+
                               <DataTableActions
                                 href="#"
                                 Icon={TrashIcon}

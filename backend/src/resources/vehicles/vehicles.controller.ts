@@ -19,7 +19,7 @@ import { CurrentTenant } from 'src/auth/decorators/current-tenant.decorator';
 import { ApiPageResponse } from 'src/page/api-page-response.decorator';
 import { ConnectionArgs } from 'src/page/connection-args.dto';
 import { Page } from 'src/page/page.dto';
-import { TrackersService } from 'src/trackers/trackers.service';
+import { TrackersService } from 'src/resources/trackers/trackers.service';
 import { CreateVehicleDto } from './dto/create-vehicle.dto';
 import { UpdateVehicleDto } from './dto/update-vehicle.dto';
 import { VehicleEntity } from './entities/vehicle.entity';
@@ -33,7 +33,7 @@ export class VehiclesController {
   constructor(
     private readonly vehiclesService: VehiclesService,
     private readonly trackerService: TrackersService,
-  ) {}
+  ) { }
 
   @Post()
   @ApiCreatedResponse({ type: VehicleEntity })

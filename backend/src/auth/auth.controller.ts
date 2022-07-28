@@ -8,9 +8,9 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
-import { TenantEntity } from 'src/tenants/entities/tenant.entity';
-import { TenantsService } from 'src/tenants/tenants.service';
-import { UserEntity } from 'src/user/entities/user.entity';
+import { TenantEntity } from 'src/resources/tenants/entities/tenant.entity';
+import { TenantsService } from 'src/resources/tenants/tenants.service';
+import { UserEntity } from 'src/resources/user/entities/user.entity';
 import { AuthService } from './auth.service';
 import { CurrentUser } from './decorators/current-user.decorator';
 import { IsPublic } from './decorators/is-public.decorator';
@@ -23,7 +23,7 @@ export class AuthController {
   constructor(
     private readonly authService: AuthService,
     private readonly tenantService: TenantsService,
-  ) {}
+  ) { }
 
   @IsPublic()
   @Post('login')

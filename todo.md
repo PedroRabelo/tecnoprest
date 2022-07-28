@@ -37,9 +37,9 @@
   [x] Barra de ferramentas para selecionar tipo de local(Ponto ou Polígono)
   [x] Configurar o Marker(maps)
   [x] Campo para pesquisar por local(place-goole-maps)
-[] Editar locais estratégicos
+[x] Editar locais estratégicos
   [x] Carregar o ponto
-  [] Carregar o polígono 
+  [x] Carregar o polígono 
 [] Configurar paginação
 [] Toast de alerta de sucesso/erro
 

@@ -234,17 +234,15 @@ export function LayoutAdmin({ children }: Props) {
                       ))}
                       <Menu.Item>
                         {({ active }) => (
-                          <Link href="/">
-                            <a
-                              className={classNames(
-                                active ? "bg-gray-100" : "",
-                                "block px-4 py-2 text-sm text-gray-700"
-                              )}
-                              onClick={handleSignOut}
-                            >
-                              Sair
-                            </a>
-                          </Link>
+                          <a
+                            className={classNames(
+                              active ? "bg-gray-100" : "",
+                              "block px-4 py-2 text-sm text-gray-700"
+                            )}
+                            onClick={handleSignOut}
+                          >
+                            Sair
+                          </a>
                         )}
                       </Menu.Item>
                     </Menu.Items>

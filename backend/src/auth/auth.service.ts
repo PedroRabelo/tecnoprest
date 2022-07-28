@@ -1,14 +1,14 @@
 import { Injectable } from '@nestjs/common';
-import { UserService } from 'src/user/user.service';
+import { UserService } from 'src/resources/user/user.service';
 import { PrismaService } from './../prisma/prisma.service';
 import * as bcrypt from 'bcrypt';
 import { UnauthorizedError } from './errors/unauthorized.error';
-import { UserEntity } from 'src/user/entities/user.entity';
+import { UserEntity } from 'src/resources/user/entities/user.entity';
 import { UserPayload } from './models/user-payload';
 import { JwtService } from '@nestjs/jwt';
 import { UserToken } from './models/user-token';
-import { TenantsService } from 'src/tenants/tenants.service';
-import { TenantEntity } from 'src/tenants/entities/tenant.entity';
+import { TenantsService } from 'src/resources/tenants/tenants.service';
+import { TenantEntity } from 'src/resources/tenants/entities/tenant.entity';
 
 @Injectable()
 export class AuthService {
@@ -17,7 +17,7 @@ export class AuthService {
     private readonly userService: UserService,
     private readonly jwtService: JwtService,
     private readonly tenantService: TenantsService,
-  ) {}
+  ) { }
 
   async login(user: UserEntity): Promise<UserToken> {
     const payload: UserPayload = {

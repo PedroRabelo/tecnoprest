@@ -13,8 +13,10 @@ import {
   Marker,
   PlacesAutocomplete,
 } from "../../../../components/map";
+import { Polygon } from "../../../../components/map/polygon";
 import Toggle from "../../../../components/toggle/toggle";
 import { useGet } from "../../../../hooks/useGet";
+import { api } from "../../../../lib/axios/apiClient";
 import { setEmptyOrStr } from "../../../../lib/lodash";
 import { mapLocationType } from "../../../../services/types";
 
@@ -69,6 +71,8 @@ export default function EditMapLocation() {
 
   const [isRoute, setIsRoute] = useState(false);
 
+  const [coords, setCoords] = useState<{ lat: number; lng: number }[]>([]);
+
   const { data: mapLocation } = useGet(
     `/map-locations/${router.query.mapLocationId}`
   );
@@ -89,11 +93,21 @@ export default function EditMapLocation() {
 
     setIsRoute(mapLocation?.isRoute);
 
+    let polygonCoords = [];
     if (mapLocation) {
-      setZoom(9);
+      setZoom(15);
       if (mapLocation.isPolygon) {
-        console.log(mapLocation?.lat);
-        console.log(mapLocation?.long);
+        for (var i = 0; i < mapLocation.lat.length; i++) {
+          polygonCoords.push({
+            lat: Number(mapLocation.lat[i]),
+            lng: Number(mapLocation.long[i]),
+          });
+        }
+        setCoords(polygonCoords);
+        setCenter({
+          lat: parseFloat(mapLocation.lat[0]),
+          lng: parseFloat(mapLocation.long[0]),
+        });
       } else {
         setPlaceSelected({
           lat: parseFloat(mapLocation.lat),
@@ -134,7 +148,15 @@ export default function EditMapLocation() {
   };
 
   const onSubmit: SubmitHandler<MapLocationForm> = async (data) => {
-    console.log(data);
+    await api
+      .patch(`/map-locations/${router.query.mapLocationId}`, data)
+      .then(() => {
+        alert("Atualizado com sucesso");
+      })
+      .catch((e) => {
+        console.log(e.response.data.message);
+        alert(e.message);
+      });
   };
 
   return (
@@ -164,8 +186,17 @@ export default function EditMapLocation() {
                 <Marker position={placeSelected} />
               )}
 
-              {mapLocation && mapLocation.isPolygon && (
-                <Drawing onPolygonComplete={onPolygonComplete} />
+              {!coords && <Drawing onPolygonComplete={onPolygonComplete} />}
+
+              {coords && coords.length > 0 && (
+                <Polygon
+                  paths={coords}
+                  strokeColor="#FF0000"
+                  strokeOpacity={0.8}
+                  strokeWeight={2}
+                  fillColor="#FF0000"
+                  fillOpacity={0.35}
+                />
               )}
             </Map>
           </Wrapper>
