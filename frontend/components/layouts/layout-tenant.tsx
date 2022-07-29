@@ -13,7 +13,6 @@ import {
 } from "@heroicons/react/outline";
 import { SearchIcon } from "@heroicons/react/solid";
 import Image from "next/image";
-import Link from "next/link";
 import { Fragment, useContext, useState } from "react";
 import { AuthContext, signOut } from "../../contexts/auth-context";
 import { LinkMenu } from "../link-menu";
@@ -40,7 +39,12 @@ const navigation = [
     current: false,
   },
   { name: "Manutenção", href: "#", icon: CogIcon, current: false },
-  { name: "Controle de Rotas", href: "#", icon: MapIcon, current: false },
+  {
+    name: "Controle de Rotas",
+    href: "/app/routes-manage",
+    icon: MapIcon,
+    current: false,
+  },
   { name: "Rastreamento", href: "#", icon: LocationMarkerIcon, current: false },
 ];
 const userNavigation = [
