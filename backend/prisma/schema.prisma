@@ -47,6 +47,8 @@ model Tenant {
   users        User[]
   vehicles     VehicleTenant[]
   mapLocations TenantMapLocation[]
+  deliveries   Delivery[]
+  drivers      DriverTenant[]
 
   @@map("tenants")
 }
@@ -76,6 +78,8 @@ model Driver {
   moppExpires           DateTime?
   languages             String[]
   emergencyPhone        String?
+
+  tenants DriverTenant[]
 
   @@map("drivers")
 }
@@ -116,6 +120,7 @@ model VehicleModel {
   makeId String
 
   vehicles Vehicle[]
+
   @@map("vehicle_models")
 }
 
@@ -168,12 +173,27 @@ model VehicleTenant {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  vehicle   Vehicle @relation(fields: [vehicleId], references: [id])
-  vehicleId String
-  tenant    Tenant  @relation(fields: [tenantId], references: [id])
-  tenantId  String
+  vehicle    Vehicle    @relation(fields: [vehicleId], references: [id])
+  vehicleId  String
+  tenant     Tenant     @relation(fields: [tenantId], references: [id])
+  tenantId   String
+  deliveries Delivery[]
 
   @@map("vehicles_tenant")
+}
+
+model DriverTenant {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  driver     Driver     @relation(fields: [driverId], references: [id])
+  driverId   String
+  tenant     Tenant     @relation(fields: [tenantId], references: [id])
+  tenantId   String
+  deliveries Delivery[]
+
+  @@map("drivers_tenant")
 }
 
 model TenantMapLocation {
@@ -194,6 +214,86 @@ model TenantMapLocation {
   tenantId String
 
   @@map("tenant_map_locations")
+}
+
+model Delivery {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  active    Boolean  @default(true)
+
+  startDate     DateTime
+  routeName     String
+  origin        String
+  originLatLong String[]
+
+  vehicle   VehicleTenant @relation(fields: [vehicleId], references: [id])
+  vehicleId String
+  driver    DriverTenant  @relation(fields: [driverId], references: [id])
+  driverId  String
+  tenant    Tenant        @relation(fields: [tenantId], references: [id])
+  tenantId  String
+
+  @@map("deliveries")
+}
+
+model DeliveryDirection {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  status   String
+  geocoded DirectionGeocoded[]
+  routes   DirectionRoute[]
+
+  @@map("delivery_directions")
+}
+
+model DirectionGeocoded {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  status  String
+  placeId String
+  types   String[]
+
+  deliveryDirection   DeliveryDirection @relation(fields: [deliveryDirectionId], references: [id])
+  deliveryDirectionId String
+
+  @@map("direction_geocoded")
+}
+
+model DirectionRoute {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  deliveryDirection   DeliveryDirection @relation(fields: [deliveryDirectionId], references: [id])
+  deliveryDirectionId String
+
+  copyrights       String
+  bounds           Json
+  legs             RouteLeg[]
+  overviewPolyline Json
+  sumary           String
+  warnings         String
+  waypointOrder    Int[]
+
+  @@map("direction_routes")
+}
+
+model RouteLeg {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  directionRoute   DirectionRoute @relation(fields: [directionRouteId], references: [id])
+  directionRouteId String
+
+  leg Json
+
+  @@map("route_legs")
 }
 
 enum Role {

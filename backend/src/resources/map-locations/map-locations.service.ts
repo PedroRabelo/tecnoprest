@@ -5,7 +5,7 @@ import { UpdateMapLocationDto } from './dto/update-map-location.dto';
 
 @Injectable()
 export class MapLocationsService {
-  constructor(private prisma: PrismaService) {}
+  constructor(private prisma: PrismaService) { }
 
   create(createMapLocationDto: CreateMapLocationDto, tenantId: string) {
     return this.prisma.tenantMapLocation.create({
@@ -24,6 +24,16 @@ export class MapLocationsService {
 
   findOne(id: string) {
     return this.prisma.tenantMapLocation.findUnique({ where: { id } });
+  }
+
+  findAllRoutesActive(tenantId: string) {
+    return this.prisma.tenantMapLocation.findMany({
+      where: {
+        tenantId,
+        active: true,
+        isRoute: true
+      }
+    })
   }
 
   update(id: string, updateMapLocationDto: UpdateMapLocationDto) {

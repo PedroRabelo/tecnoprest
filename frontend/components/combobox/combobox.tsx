@@ -2,33 +2,46 @@ import { useState } from "react";
 import { CheckIcon, SelectorIcon } from "@heroicons/react/solid";
 import { Combobox } from "@headlessui/react";
 
-const people = [
-  { name: "Leslie Alexander", username: "@lesliealexander" },
-  // More users...
-];
-
 function classNames(...classes: (string | boolean)[]) {
   return classes.filter(Boolean).join(" ");
+}
+
+export interface ComboBoxOption {
+  id: string;
+  title: string;
+  description?: string;
 }
 
 type Props = {
   label: string;
   placeholder?: string;
+  options: ComboBoxOption[];
+  setOptionSelected: (optionSelected: ComboBoxOption) => void;
 };
 
-export default function ComboBox({ label, placeholder }: Props) {
+export default function ComboBox({
+  label,
+  placeholder,
+  options,
+  setOptionSelected,
+}: Props) {
   const [query, setQuery] = useState("");
-  const [selectedPerson, setSelectedPerson] = useState();
+  const [selected, setSelected] = useState<ComboBoxOption>();
 
   const filteredPeople =
     query === ""
-      ? people
-      : people.filter((person) => {
-          return person.name.toLowerCase().includes(query.toLowerCase());
+      ? options
+      : options.filter((option) => {
+          return option.title.toLowerCase().includes(query.toLowerCase());
         });
 
+  function handleSelect(option: ComboBoxOption) {
+    setSelected(option);
+    setOptionSelected(option);
+  }
+
   return (
-    <Combobox as="div" value={selectedPerson} onChange={setSelectedPerson}>
+    <Combobox as="div" value={selected} onChange={handleSelect}>
       <Combobox.Label className="block text-sm font-medium text-gray-700">
         {label}
       </Combobox.Label>
@@ -36,7 +49,7 @@ export default function ComboBox({ label, placeholder }: Props) {
         <Combobox.Input
           className="w-full rounded-md border border-gray-300 bg-white py-2 pl-3 pr-10 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500 sm:text-sm"
           onChange={(event) => setQuery(event.target.value)}
-          displayValue={(person: any) => person?.name}
+          displayValue={(option: ComboBoxOption) => option?.title}
           placeholder={placeholder}
         />
         <Combobox.Button className="absolute inset-y-0 right-0 flex items-center rounded-r-md px-2 focus:outline-none">
@@ -45,10 +58,10 @@ export default function ComboBox({ label, placeholder }: Props) {
 
         {filteredPeople.length > 0 && (
           <Combobox.Options className="absolute z-10 mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
-            {filteredPeople.map((person) => (
+            {filteredPeople.map((option) => (
               <Combobox.Option
-                key={person.username}
-                value={person}
+                key={option.id}
+                value={option}
                 className={({ active }) =>
                   classNames(
                     "relative cursor-default select-none py-2 pl-3 pr-9",
@@ -65,7 +78,7 @@ export default function ComboBox({ label, placeholder }: Props) {
                           selected && "font-semibold"
                         )}
                       >
-                        {person.name}
+                        {option.title}
                       </span>
                       <span
                         className={classNames(
@@ -73,7 +86,7 @@ export default function ComboBox({ label, placeholder }: Props) {
                           active ? "text-indigo-200" : "text-gray-500"
                         )}
                       >
-                        {person.username}
+                        {option.description}
                       </span>
                     </div>
 

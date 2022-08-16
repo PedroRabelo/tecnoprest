@@ -48,3 +48,6 @@
 
 # CONTINUAR
 - Criar componente de menu do profile
+
+
+# select st_point(-46.696584,-23.567314,4326)::geometry; 

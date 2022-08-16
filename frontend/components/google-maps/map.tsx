@@ -1,18 +1,21 @@
-import { GoogleMap, Marker } from "@react-google-maps/api";
+import { DirectionsRenderer, GoogleMap, Marker } from "@react-google-maps/api";
 import { useCallback, useMemo } from "react";
 
 type LatLngLiteral = google.maps.LatLngLiteral;
 type MapOptions = google.maps.MapOptions;
+type DirectionsResult = google.maps.DirectionsResult;
 
 type MapsProps = {
   originPosition?: LatLngLiteral;
   destinationPosition?: LatLngLiteral;
+  directions?: DirectionsResult;
   onLoad: (map: google.maps.Map) => void;
 };
 
 export function Map({
   originPosition,
   destinationPosition,
+  directions,
   onLoad,
 }: MapsProps) {
   const center = useMemo<LatLngLiteral>(
@@ -36,6 +39,20 @@ export function Map({
       onLoad={onLoad}
     >
       {originPosition && <Marker position={originPosition} />}
+      {destinationPosition && <Marker position={destinationPosition} />}
+
+      {directions && (
+        <DirectionsRenderer
+          directions={directions}
+          options={{
+            polylineOptions: {
+              zIndex: 50,
+              strokeColor: "#1976D2",
+              strokeWeight: 5,
+            },
+          }}
+        />
+      )}
     </GoogleMap>
   );
 }

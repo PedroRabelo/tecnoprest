@@ -26,7 +26,7 @@ import { MapLocationsService } from './map-locations.service';
 @ApiExtraModels(Page)
 @ApiBearerAuth()
 export class MapLocationsController {
-  constructor(private readonly mapLocationsService: MapLocationsService) {}
+  constructor(private readonly mapLocationsService: MapLocationsService) { }
 
   @Post()
   @ApiCreatedResponse({ type: MapLocationEntity })
@@ -38,6 +38,12 @@ export class MapLocationsController {
       createMapLocationDto,
       tenantId,
     );
+  }
+
+  @Get('routes')
+  @ApiOkResponse({ type: [MapLocationEntity] })
+  async findAllRoutesActive(@CurrentTenant() tenantId: string) {
+    return await this.mapLocationsService.findAllRoutesActive(tenantId);
   }
 
   @Get()
