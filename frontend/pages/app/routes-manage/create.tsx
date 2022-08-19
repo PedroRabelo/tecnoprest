@@ -1,4 +1,9 @@
-import { GoogleMap, useLoadScript } from "@react-google-maps/api";
+import {
+  DirectionsRenderer,
+  GoogleMap,
+  Marker,
+  useLoadScript,
+} from "@react-google-maps/api";
 import { useCallback, useMemo, useRef, useState } from "react";
 import { Button } from "../../../components";
 import ComboBox, {
@@ -16,8 +21,9 @@ export const libraries: (
   | "visualization"
 )[] = ["places"];
 
-type DirectionsResult = google.maps.DirectionsResult;
 type LatLngLiteral = google.maps.LatLngLiteral;
+type MapOptions = google.maps.MapOptions;
+type DirectionsResult = google.maps.DirectionsResult;
 
 export function CreateRoute() {
   const { isLoaded } = useLoadScript({
@@ -26,6 +32,18 @@ export function CreateRoute() {
   });
 
   const mapRef = useRef<GoogleMap>();
+
+  const center = useMemo<LatLngLiteral>(
+    () => ({ lat: -9.148933007262677, lng: -56.041542722767474 }),
+    []
+  );
+  const options = useMemo<MapOptions>(
+    () => ({
+      disableDefaultUI: true,
+      clickableIcons: false,
+    }),
+    []
+  );
 
   const [originPlaceSelected, setOriginPlaceSelected] =
     useState<LatLngLiteral>();
@@ -151,12 +169,31 @@ export function CreateRoute() {
         </div>
       </div>
       <div className="flex h-[70vh] pt-4">
-        <Map
+        <GoogleMap
+          zoom={5}
+          center={center}
+          mapContainerStyle={{ flexGrow: "1", height: "100%" }}
+          options={options}
           onLoad={onLoad}
-          originPosition={originPlaceSelected}
-          destinationPosition={destinationPlaceSelected}
-          directions={directions}
-        />
+        >
+          {originPlaceSelected && <Marker position={originPlaceSelected} />}
+          {destinationPlaceSelected && (
+            <Marker position={destinationPlaceSelected} />
+          )}
+
+          {directions && (
+            <DirectionsRenderer
+              directions={directions}
+              options={{
+                polylineOptions: {
+                  zIndex: 50,
+                  strokeColor: "#1976D2",
+                  strokeWeight: 5,
+                },
+              }}
+            />
+          )}
+        </GoogleMap>
       </div>
     </div>
   );

@@ -1,5 +1,5 @@
 import { DirectionsRenderer, GoogleMap, Marker } from "@react-google-maps/api";
-import { useCallback, useMemo } from "react";
+import { useMemo } from "react";
 
 type LatLngLiteral = google.maps.LatLngLiteral;
 type MapOptions = google.maps.MapOptions;
