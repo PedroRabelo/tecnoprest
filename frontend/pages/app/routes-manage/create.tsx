@@ -9,11 +9,10 @@ import { Button } from "../../../components";
 import ComboBox, {
   ComboBoxOption,
 } from "../../../components/combobox/combobox";
-import { Map } from "../../../components/google-maps";
 import { Places } from "../../../components/google-maps/places";
 import { useGet } from "../../../hooks/useGet";
 
-export const libraries: (
+const libraries: (
   | "places"
   | "drawing"
   | "geometry"

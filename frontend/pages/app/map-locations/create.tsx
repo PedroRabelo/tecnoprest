@@ -1,33 +1,43 @@
 import { Dialog, RadioGroup, Transition } from "@headlessui/react";
 import { ChevronDoubleLeftIcon, XIcon } from "@heroicons/react/outline";
-import { Fragment, useEffect, useRef, useState } from "react";
+import {
+  Fragment,
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 import { Button, FormInput, SelectInput } from "../../../components";
 import { GoBackButton } from "../../../components/button/go-back-button";
 
-import { Status, Wrapper } from "@googlemaps/react-wrapper";
-import { Drawing, Map } from "../../../components/map";
-import { Marker } from "../../../components/map/marker";
-import * as yup from "yup";
-import { SubmitHandler, useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { api } from "../../../lib/axios/apiClient";
+import {
+  DrawingManager,
+  GoogleMap,
+  Marker,
+  useLoadScript,
+} from "@react-google-maps/api";
 import { useRouter } from "next/router";
+import { SubmitHandler, useForm } from "react-hook-form";
+import * as yup from "yup";
 import { TextAreaInput } from "../../../components/form/form-textarea";
+import Toggle from "../../../components/toggle/toggle";
+import { api } from "../../../lib/axios/apiClient";
 import { setEmptyOrStr } from "../../../lib/lodash";
 import { mapLocationType } from "../../../services/types";
-import { PlacesAutocomplete } from "../../../components/map/places-autocomplete";
-import Toggle from "../../../components/toggle/toggle";
+import { Places } from "../../../components/google-maps/places";
 
-const render = (status: Status) => {
-  switch (status) {
-    case Status.LOADING:
-      return <h1>Carregando</h1>;
-    case Status.FAILURE:
-      return <h1>Erro</h1>;
-    case Status.SUCCESS:
-      return <CreateMapLocation />;
-  }
-};
+const libraries: (
+  | "places"
+  | "drawing"
+  | "geometry"
+  | "localContext"
+  | "visualization"
+)[] = ["places", "drawing"];
+
+type LatLngLiteral = google.maps.LatLngLiteral;
+type MapOptions = google.maps.MapOptions;
 
 type Bound = {
   lat: string;
@@ -58,15 +68,32 @@ function classNames(...classes: string[]) {
 }
 
 export function CreateMapLocation() {
+  const { isLoaded } = useLoadScript({
+    googleMapsApiKey: process.env.NEXT_PUBLIC_GOOGLE_API_KEY!,
+    libraries: libraries,
+  });
+
+  const mapRef = useRef<GoogleMap>();
+
+  const onLoad = useCallback((map: any) => (mapRef.current = map), []);
+
+  const center = useMemo<LatLngLiteral>(
+    () => ({ lat: -9.148933007262677, lng: -56.041542722767474 }),
+    []
+  );
+  const zoom = useMemo(() => 4, []); // initial zoom
+  const options = useMemo<MapOptions>(
+    () => ({
+      disableDefaultUI: true,
+      clickableIcons: false,
+    }),
+    []
+  );
+
   const router = useRouter();
 
   const [open, setOpen] = useState(false);
 
-  const [zoom, setZoom] = useState(4); // initial zoom
-  const [center, setCenter] = useState<google.maps.LatLngLiteral>({
-    lat: -9.148933007262677,
-    lng: -56.041542722767474,
-  });
   const [polygon, setPolygon] = useState<google.maps.Polygon>();
   const [bounds, setBounds] = useState<Bound[]>();
   const [placeSelected, setPlaceSelected] =
@@ -85,8 +112,7 @@ export function CreateMapLocation() {
 
   useEffect(() => {
     if (placeSelected) {
-      setCenter(placeSelected);
-      setZoom(14);
+      mapRef.current?.panTo(placeSelected);
     }
   }, [placeSelected]);
 
@@ -105,12 +131,6 @@ export function CreateMapLocation() {
     // avoid directly mutating state
     setPlaceSelected(e.latLng?.toJSON()!);
     setOpen(true);
-  };
-
-  const onIdle = (m: google.maps.Map) => {
-    console.log("onIdle");
-    setZoom(m.getZoom()!);
-    setCenter(m.getCenter()!.toJSON());
   };
 
   const onPolygonComplete = (polygon: google.maps.Polygon) => {
@@ -166,6 +186,12 @@ export function CreateMapLocation() {
         alert(e.message);
       });
   };
+
+  const onLoadDrawing = (drawingManager: any) => {
+    console.log(drawingManager);
+  };
+
+  if (!isLoaded) return <div>Loading...</div>;
 
   return (
     <div>
@@ -348,33 +374,36 @@ export function CreateMapLocation() {
       </Transition.Root>
 
       <div className="flex h-[78vh] pt-4">
-        <Wrapper
-          apiKey={process.env.NEXT_PUBLIC_GOOGLE_API_KEY!}
-          render={render}
-          libraries={["drawing", "places"]}
+        <GoogleMap
+          zoom={5}
+          center={center}
+          mapContainerStyle={{ flexGrow: "1", height: "100%" }}
+          options={options}
+          onLoad={onLoad}
+          onClick={onClick}
         >
-          <Map
-            center={center}
-            onIdle={onIdle}
-            onClick={onClick}
-            zoom={zoom}
-            streetViewControl={false}
-            fullscreenControl={false}
-            style={{ flexGrow: "1", height: "100%" }}
-          >
-            <div className="absolute m-4 w-72">
-              <PlacesAutocomplete setSelected={setPlaceSelected} />
-            </div>
+          <div className="absolute m-4 w-72">
+            <Places setSelected={setPlaceSelected} />
+          </div>
 
-            {typeSelected === placeType[0] && placeSelected && (
-              <Marker position={placeSelected} />
-            )}
+          {typeSelected === placeType[0] && placeSelected && (
+            <Marker position={placeSelected} />
+          )}
 
-            {typeSelected === placeType[1] && (
-              <Drawing onPolygonComplete={onPolygonComplete} />
-            )}
-          </Map>
-        </Wrapper>
+          {typeSelected === placeType[1] && (
+            <DrawingManager
+              onPolygonComplete={onPolygonComplete}
+              onLoad={onLoadDrawing}
+              options={{
+                drawingControl: true,
+                drawingControlOptions: {
+                  position: google.maps.ControlPosition.TOP_CENTER,
+                  drawingModes: [google.maps.drawing.OverlayType.POLYGON],
+                },
+              }}
+            />
+          )}
+        </GoogleMap>
       </div>
     </div>
   );
