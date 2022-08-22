@@ -7,7 +7,7 @@ export function TenantHome() {
   return (
     <div>
       <h1>
-        Bem-vindo {user?.name} - {user?.slug}
+        Bem-vindo {user?.name}
       </h1>
     </div>
   );

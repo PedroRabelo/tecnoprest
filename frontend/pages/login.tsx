@@ -1,5 +1,6 @@
 import { LockClosedIcon } from "@heroicons/react/solid";
 import { yupResolver } from "@hookform/resolvers/yup";
+import Image from "next/image";
 import { useContext, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import * as yup from "yup";
@@ -36,95 +37,95 @@ export default function Login() {
 
   return (
     <>
-      <div className="flex min-h-full items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
-        <div className="w-full max-w-md space-y-8">
-          <div>
-            <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
-              Faça login na sua conta
-            </h2>
-          </div>
-          <form
-            className="mt-8 space-y-12"
-            onSubmit={handleSubmit(handleSignIn)}
-            noValidate
-          >
-            <input type="hidden" name="remember" defaultValue="true" />
-            <div className="-space-y-px rounded-md shadow-sm">
-              <div>
-                <label htmlFor="email-address" className="sr-only">
-                  Email
-                </label>
-                <input
-                  id="email-address"
-                  type="email"
-                  autoComplete="email"
-                  className="relative block w-full appearance-none rounded-none rounded-t-md border border-gray-300 px-3 py-2 text-gray-900 placeholder-gray-500 focus:z-10 focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
-                  placeholder="Email"
-                  {...register("email")}
-                />
-              </div>
-              <div>
-                <label htmlFor="password" className="sr-only">
-                  Senha
-                </label>
-                <input
-                  id="password"
-                  type="password"
-                  autoComplete="current-password"
-                  className="relative block w-full appearance-none rounded-none rounded-b-md border border-gray-300 px-3 py-2 text-gray-900 placeholder-gray-500 focus:z-10 focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
-                  placeholder="Senha"
-                  {...register("password")}
-                />
-              </div>
-            </div>
-
-            <div className="flex items-center justify-between">
-              <div className="flex items-center">
-                <input
-                  id="remember-me"
-                  name="remember-me"
-                  type="checkbox"
-                  className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
-                />
-                <label
-                  htmlFor="remember-me"
-                  className="ml-2 block text-sm text-gray-900"
-                >
-                  Lembrar
-                </label>
-              </div>
-
-              <div className="text-sm">
-                <a
-                  href="#"
-                  className="font-medium text-indigo-600 hover:text-indigo-500"
-                >
-                  Esqueceu sua senha?
-                </a>
-              </div>
-            </div>
-
+      <div className="h-screen min-h-full flex">
+        <div className="flex-1 flex flex-col justify-center py-12 px-4 sm:px-6 lg:flex-none lg:px-20 xl:px-24">
+          <div className="mx-auto w-full max-w-sm lg:w-96">
             <div>
-              <button
-                type="submit"
-                className="group relative flex w-full justify-center rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
-              >
-                <span className="absolute inset-y-0 left-0 flex items-center pl-3">
-                  <LockClosedIcon
-                    className="h-5 w-5 text-indigo-500 group-hover:text-indigo-400"
-                    aria-hidden="true"
-                  />
-                </span>
-                Entrar
-              </button>
+              <h2 className="mt-6 text-3xl tracking-tight font-bold text-gray-900">Faça login na sua conta</h2>
             </div>
 
-            <div className="flex-col">
-              <p className="text-red-500">{errors.email?.message}</p>
-              <p className="mt-2 text-red-500">{errors.password?.message}</p>
-              <p className="mt-2 text-red-500">{error}</p>
+            <div className="mt-8">
+              <div className="mt-6">
+                <form className="space-y-6" onSubmit={handleSubmit(handleSignIn)}
+                  noValidate>
+                  <div>
+                    <label htmlFor="email" className="block text-sm font-medium text-gray-700">
+                      Email
+                    </label>
+                    <div className="mt-1">
+                      <input
+                        id="email-address"
+                        type="email"
+                        autoComplete="email"
+                        placeholder="Email"
+                        {...register("email")}
+                        className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                      />
+                    </div>
+                  </div>
+
+                  <div className="space-y-1">
+                    <label htmlFor="password" className="block text-sm font-medium text-gray-700">
+                      Senha
+                    </label>
+                    <div className="mt-1">
+                      <input
+                        id="password"
+                        type="password"
+                        autoComplete="current-password"
+                        placeholder="Senha"
+                        {...register("password")}
+                        className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                      />
+                    </div>
+                  </div>
+
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center">
+                      <input
+                        id="remember-me"
+                        name="remember-me"
+                        type="checkbox"
+                        className="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded"
+                      />
+                      <label htmlFor="remember-me" className="ml-2 block text-sm text-gray-900">
+                        Lembrar
+                      </label>
+                    </div>
+
+                    <div className="text-sm">
+                      <a href="#" className="font-medium text-indigo-600 hover:text-indigo-500">
+                        Esqueceu sua senha?
+                      </a>
+                    </div>
+                  </div>
+
+                  <div>
+                    <button
+                      type="submit"
+                      className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                    >
+                      Entrar
+                    </button>
+                  </div>
+
+                  <div className="flex-col">
+                    <p className="text-red-500">{errors.email?.message}</p>
+                    <p className="mt-2 text-red-500">{errors.password?.message}</p>
+                    <p className="mt-2 text-red-500">{error}</p>
+                  </div>
+                </form>
+              </div>
             </div>
-          </form>
+          </div>
+        </div>
+        <div className="hidden lg:block relative w-0 flex-1">
+          <Image
+            layout="fill"
+            className="absolute inset-0 h-full w-full object-cover"
+            src="/img/login-img.png"
+            alt=""
+          />
         </div>
       </div>
     </>
