@@ -1,16 +1,17 @@
 import { Module } from '@nestjs/common';
+import { APP_GUARD } from '@nestjs/core';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { PrismaModule } from './prisma/prisma.module';
 import { AuthModule } from './auth/auth.module';
-import { UserModule } from './resources/user/user.module';
-import { APP_GUARD } from '@nestjs/core';
 import { JwtAuthGuard } from './auth/guards/jwt-auth.guard';
-import { TenantsModule } from './resources/tenants/tenants.module';
+import { PrismaModule } from './prisma/prisma.module';
 import { DriversModule } from './resources/drivers/drivers.module';
-import { VehiclesModule } from './resources/vehicles/vehicles.module';
-import { TrackersModule } from './resources/trackers/trackers.module';
 import { MapLocationsModule } from './resources/map-locations/map-locations.module';
+import { TenantsModule } from './resources/tenants/tenants.module';
+import { TrackersModule } from './resources/trackers/trackers.module';
+import { UserModule } from './resources/user/user.module';
+import { VehiclesModule } from './resources/vehicles/vehicles.module';
+import { DeliveriesModule } from './resources/deliveries/deliveries.module';
 
 @Module({
   imports: [
@@ -22,6 +23,7 @@ import { MapLocationsModule } from './resources/map-locations/map-locations.modu
     VehiclesModule,
     TrackersModule,
     MapLocationsModule,
+    DeliveriesModule,
   ],
   controllers: [AppController],
   providers: [
@@ -32,4 +34,4 @@ import { MapLocationsModule } from './resources/map-locations/map-locations.modu
     },
   ],
 })
-export class AppModule { }
+export class AppModule {}

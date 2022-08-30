@@ -18,8 +18,8 @@ export class PedidosService {
     return this.pedidoRepository.save(pedido);
   }
 
-  findAll(): Promise<Pedido[]> {
-    return this.pedidoRepository.find();
+  async findAll(): Promise<Pedido[]> {
+    return await this.pedidoRepository.find();
   }
 
   async remove(id: number): Promise<void> {
