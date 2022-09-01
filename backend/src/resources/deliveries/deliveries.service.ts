@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
+import { CreateOrderDto } from 'src/client/routes-api/orders/create-order.dto';
 import { OrdersService } from 'src/client/routes-api/orders/orders.service';
-import { convertCsvToJson } from 'src/common/utils/convertCsvToJson';
 import { CreateDeliveryDto } from './dto/create-delivery.dto';
 import { UpdateDeliveryDto } from './dto/update-delivery.dto';
 
@@ -8,12 +8,10 @@ import { UpdateDeliveryDto } from './dto/update-delivery.dto';
 export class DeliveriesService {
   constructor(private readonly ordersService: OrdersService) {}
 
-  createDeliveriesOrders(csvFile: string) {
-    const orders = convertCsvToJson(csvFile);
+  createDeliveriesOrders(orders: CreateOrderDto[]) {
+    const response = this.ordersService.createOrders(orders);
 
-    const response = this.ordersService.createOrders(JSON.parse(orders));
-
-    return orders;
+    return response;
   }
 
   create(createDeliveryDto: CreateDeliveryDto) {

@@ -22,8 +22,8 @@ export class CreatePedidoDto {
   @IsString()
   endereco: string;
 
-  @IsNumber()
-  numero: number;
+  @IsString()
+  numero: string;
 
   @IsString()
   bairro: string;

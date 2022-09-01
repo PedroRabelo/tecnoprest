@@ -10,6 +10,7 @@ import {
   UseInterceptors,
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
+import { CreateOrderDto } from 'src/client/routes-api/orders/create-order.dto';
 import { readFile, utils } from 'xlsx';
 import { DeliveriesService } from './deliveries.service';
 import { CreateDeliveryDto } from './dto/create-delivery.dto';
@@ -22,12 +23,27 @@ export class DeliveriesController {
   @Post('upload-sheet')
   @UseInterceptors(FileInterceptor('file', { dest: '/tmp/' }))
   async uploadDeliveriesSheet(@UploadedFile() file: Express.Multer.File) {
-    const wb = readFile(file.path);
-    const xlsxToCsv = utils.sheet_to_csv(wb.Sheets[wb.SheetNames[0]], {
-      FS: ';',
-    });
+    const readOpts = {
+      cellText: false,
+      cellDates: true,
+    };
 
-    return this.deliveriesService.createDeliveriesOrders(xlsxToCsv);
+    const jsonOpts = {
+      defval: '',
+      blankrows: true,
+      raw: true,
+      rawNumber: true,
+      dateNF: 'd"/"m"/"yyyy',
+    };
+
+    const wb = readFile(file.path, readOpts);
+
+    const json: CreateOrderDto[] = utils.sheet_to_json(
+      wb.Sheets[wb.SheetNames[0]],
+      jsonOpts,
+    );
+
+    return this.deliveriesService.createDeliveriesOrders(json);
   }
 
   @Post()

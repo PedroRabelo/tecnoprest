@@ -27,7 +27,7 @@ export class Pedido {
   endereco: string;
 
   @Column({ name: 'Numero' })
-  numero: number;
+  numero: string;
 
   @Column({ name: 'Bairro' })
   bairro: string;
@@ -44,10 +44,10 @@ export class Pedido {
   @Column({ name: 'longitude' })
   longitude: number;
 
-  @Column({ name: 'Total' })
+  @Column({ name: 'Total', type: 'float' })
   total: number;
 
-  @Column({ name: 'Bruto' })
+  @Column({ name: 'Bruto', type: 'float' })
   bruto: number;
 
   constructor(partial: Partial<Pedido>) {

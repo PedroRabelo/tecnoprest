@@ -6,7 +6,7 @@ export class CreateOrderDto {
   idEntrega: string;
   cep: string;
   endereco: string;
-  numero: number;
+  numero: string;
   bairro: string;
   cidade: string;
   estado: string;

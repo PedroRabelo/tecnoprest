@@ -9,8 +9,6 @@ export class OrdersService {
   constructor(private readonly httpService: HttpService) {}
 
   listAll(): Observable<AxiosResponse<[]>> {
-    console.log('listAll');
-
     return this.httpService
       .get(`${process.env.ROUTES_API_URL}/pedidos`)
       .pipe(map((response) => response.data));
