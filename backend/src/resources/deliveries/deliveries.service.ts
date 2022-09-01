@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { CreateOrderDto } from 'src/client/routes-api/orders/create-order.dto';
 import { OrdersService } from 'src/client/routes-api/orders/orders.service';
+import { DatabaseError } from 'src/common/errors/types/DatabaseError';
 import { CreateDeliveryDto } from './dto/create-delivery.dto';
 import { UpdateDeliveryDto } from './dto/update-delivery.dto';
 
@@ -8,8 +9,14 @@ import { UpdateDeliveryDto } from './dto/update-delivery.dto';
 export class DeliveriesService {
   constructor(private readonly ordersService: OrdersService) {}
 
-  createDeliveriesOrders(orders: CreateOrderDto[]) {
-    const response = this.ordersService.createOrders(orders);
+  async createDeliveryOrders(orders: CreateOrderDto[]) {
+    const response = await this.ordersService.createOrders(orders);
+
+    if (response === 201) {
+      // TODO Salvar os dados na tabela de delivery
+    } else {
+      new DatabaseError('Ocorreu um erro na comunicação com a api de rotas');
+    }
 
     return response;
   }

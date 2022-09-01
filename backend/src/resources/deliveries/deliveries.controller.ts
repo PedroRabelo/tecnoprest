@@ -43,7 +43,7 @@ export class DeliveriesController {
       jsonOpts,
     );
 
-    return this.deliveriesService.createDeliveriesOrders(json);
+    return this.deliveriesService.createDeliveryOrders(json);
   }
 
   @Post()
