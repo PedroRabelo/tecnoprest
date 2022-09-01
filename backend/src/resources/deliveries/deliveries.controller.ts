@@ -1,16 +1,15 @@
 import {
-  Controller,
-  Get,
-  Post,
   Body,
-  Patch,
-  Param,
+  Controller,
   Delete,
-  UseInterceptors,
+  Get,
+  Param,
+  Patch,
+  Post,
   UploadedFile,
+  UseInterceptors,
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
-import { OrdersService } from 'src/client/routes-api/orders/orders.service';
 import { readFile, utils } from 'xlsx';
 import { DeliveriesService } from './deliveries.service';
 import { CreateDeliveryDto } from './dto/create-delivery.dto';
@@ -24,10 +23,11 @@ export class DeliveriesController {
   @UseInterceptors(FileInterceptor('file', { dest: '/tmp/' }))
   async uploadDeliveriesSheet(@UploadedFile() file: Express.Multer.File) {
     const wb = readFile(file.path);
-    const xlsxToCsv = utils.sheet_to_csv(wb.Sheets[wb.SheetNames[0]]);
+    const xlsxToCsv = utils.sheet_to_csv(wb.Sheets[wb.SheetNames[0]], {
+      FS: ';',
+    });
 
     return this.deliveriesService.createDeliveriesOrders(xlsxToCsv);
-    // console.log(xlsxToCsv);
   }
 
   @Post()

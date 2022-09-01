@@ -49,4 +49,8 @@ export class Pedido {
 
   @Column({ name: 'Bruto' })
   bruto: number;
+
+  constructor(partial: Partial<Pedido>) {
+    Object.assign(this, partial);
+  }
 }

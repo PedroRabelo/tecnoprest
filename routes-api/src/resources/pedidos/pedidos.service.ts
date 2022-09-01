@@ -11,11 +11,11 @@ export class PedidosService {
     private pedidoRepository: Repository<Pedido>,
   ) {}
 
-  create(createPedidoDto: CreatePedidoDto): Promise<Pedido> {
-    const pedido = new Pedido();
-    Object.assign(pedido, createPedidoDto);
-
-    return this.pedidoRepository.save(pedido);
+  create(createPedidoDto: CreatePedidoDto[]) {
+    createPedidoDto.map(async (data) => {
+      const pedido = new Pedido(data);
+      await this.pedidoRepository.save(pedido);
+    });
   }
 
   async findAll(): Promise<Pedido[]> {

@@ -7,7 +7,7 @@ export class PedidosController {
   constructor(private readonly pedidosService: PedidosService) {}
 
   @Post()
-  create(@Body() createPedidoDto: CreatePedidoDto) {
+  create(@Body() createPedidoDto: CreatePedidoDto[]) {
     return this.pedidosService.create(createPedidoDto);
   }
 
