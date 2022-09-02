@@ -2,12 +2,16 @@ import { Injectable } from '@nestjs/common';
 import { CreateOrderDto } from 'src/client/routes-api/orders/create-order.dto';
 import { OrdersService } from 'src/client/routes-api/orders/orders.service';
 import { DatabaseError } from 'src/common/errors/types/DatabaseError';
+import { PrismaService } from 'src/prisma/prisma.service';
 import { CreateDeliveryDto } from './dto/create-delivery.dto';
 import { UpdateDeliveryDto } from './dto/update-delivery.dto';
 
 @Injectable()
 export class DeliveriesService {
-  constructor(private readonly ordersService: OrdersService) {}
+  constructor(
+    private prisma: PrismaService,
+    private readonly ordersService: OrdersService,
+  ) {}
 
   async createDeliveryOrders(orders: CreateOrderDto[]) {
     const response = await this.ordersService.createOrders(orders);
@@ -21,12 +25,19 @@ export class DeliveriesService {
     return response;
   }
 
-  create(createDeliveryDto: CreateDeliveryDto) {
-    return 'This action adds a new delivery';
+  create(createDeliveryDto: CreateDeliveryDto, tenantId: string) {
+    return this.prisma.delivery.create({
+      data: {
+        tenantId,
+        ...createDeliveryDto,
+      },
+    });
   }
 
-  findAll() {
-    return `This action returns all deliveries`;
+  findAll(tenantId: string) {
+    return this.prisma.delivery.findMany({
+      where: { tenantId },
+    });
   }
 
   findOne(id: number) {

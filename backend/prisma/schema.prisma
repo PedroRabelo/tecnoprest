@@ -227,11 +227,11 @@ model Delivery {
   origin        String
   originLatLong String[]
 
-  vehicle   VehicleTenant @relation(fields: [vehicleId], references: [id])
-  vehicleId String
-  driver    DriverTenant  @relation(fields: [driverId], references: [id])
-  driverId  String
-  tenant    Tenant        @relation(fields: [tenantId], references: [id])
+  vehicle   VehicleTenant? @relation(fields: [vehicleId], references: [id])
+  vehicleId String?
+  driver    DriverTenant?  @relation(fields: [driverId], references: [id])
+  driverId  String?
+  tenant    Tenant         @relation(fields: [tenantId], references: [id])
   tenantId  String
 
   @@map("deliveries")

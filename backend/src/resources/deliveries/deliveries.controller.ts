@@ -10,11 +10,14 @@ import {
   UseInterceptors,
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
+import { ApiCreatedResponse, ApiOkResponse } from '@nestjs/swagger';
+import { CurrentTenant } from 'src/auth/decorators/current-tenant.decorator';
 import { CreateOrderDto } from 'src/client/routes-api/orders/create-order.dto';
 import { readFile, utils } from 'xlsx';
 import { DeliveriesService } from './deliveries.service';
 import { CreateDeliveryDto } from './dto/create-delivery.dto';
 import { UpdateDeliveryDto } from './dto/update-delivery.dto';
+import { DeliveryEntity } from './entities/delivery.entity';
 
 @Controller('deliveries')
 export class DeliveriesController {
@@ -47,13 +50,18 @@ export class DeliveriesController {
   }
 
   @Post()
-  create(@Body() createDeliveryDto: CreateDeliveryDto) {
-    return this.deliveriesService.create(createDeliveryDto);
+  @ApiCreatedResponse({ type: DeliveryEntity })
+  async create(
+    @CurrentTenant() tenantId: string,
+    @Body() createDeliveryDto: CreateDeliveryDto,
+  ) {
+    return await this.deliveriesService.create(createDeliveryDto, tenantId);
   }
 
   @Get()
-  findAll() {
-    return this.deliveriesService.findAll();
+  @ApiOkResponse({ type: [DeliveryEntity] })
+  async findAll(@CurrentTenant() tenantId: string) {
+    return await this.deliveriesService.findAll(tenantId);
   }
 
   @Get(':id')
