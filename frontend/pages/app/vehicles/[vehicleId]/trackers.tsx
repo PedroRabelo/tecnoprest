@@ -1,4 +1,4 @@
-import { PlusIcon, TrashIcon } from "@heroicons/react/outline";
+import { PlusIcon, TrashIcon } from "@heroicons/react/24/outline";
 import { yupResolver } from "@hookform/resolvers/yup";
 import Link from "next/link";
 import { useRouter } from "next/router";

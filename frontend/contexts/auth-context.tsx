@@ -29,8 +29,8 @@ type AuthProviderProps = {
 export const AuthContext = createContext({} as AuthContextData);
 
 export function signOut() {
-  destroyCookie(undefined, "tecnoprest.token");
-  destroyCookie(undefined, "tecnoprest.refreshToken");
+  destroyCookie(null, "tecnoprest.token", { path: '/' });
+  destroyCookie(null, "tecnoprest.refreshToken", { path: '/' });
 
   Router.push("/");
 }

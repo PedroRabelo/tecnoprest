@@ -1,16 +1,12 @@
 import { Dialog, Menu, Transition } from "@headlessui/react";
 import {
-  BellIcon,
+  Bars3Icon, BellIcon,
   ChartBarIcon,
   HomeIcon,
-  IdentificationIcon,
-  MenuAlt2Icon,
-  UsersIcon,
-  XIcon,
-} from "@heroicons/react/outline";
-import { SearchIcon } from "@heroicons/react/solid";
+  IdentificationIcon, UsersIcon, XMarkIcon
+} from "@heroicons/react/24/outline";
+import { MagnifyingGlassIcon } from "@heroicons/react/24/solid";
 import Image from "next/image";
-import Link from "next/link";
 import { Fragment, useState } from "react";
 import { signOut } from "../../contexts/auth-context";
 import { LinkMenu } from "../link-menu";
@@ -94,7 +90,7 @@ export function LayoutAdmin({ children }: Props) {
                         onClick={() => setSidebarOpen(false)}
                       >
                         <span className="sr-only">Close sidebar</span>
-                        <XIcon
+                        <XMarkIcon
                           className="h-6 w-6 text-white"
                           aria-hidden="true"
                         />
@@ -166,7 +162,7 @@ export function LayoutAdmin({ children }: Props) {
               onClick={() => setSidebarOpen(true)}
             >
               <span className="sr-only">Open sidebar</span>
-              <MenuAlt2Icon className="h-6 w-6" aria-hidden="true" />
+              <Bars3Icon className="h-6 w-6" aria-hidden="true" />
             </button>
             <div className="flex-1 px-4 flex justify-between">
               <div className="flex-1 flex">
@@ -176,7 +172,7 @@ export function LayoutAdmin({ children }: Props) {
                   </label>
                   <div className="relative w-full text-gray-400 focus-within:text-gray-600">
                     <div className="absolute inset-y-0 left-0 flex items-center pointer-events-none">
-                      <SearchIcon className="h-5 w-5" aria-hidden="true" />
+                      <MagnifyingGlassIcon className="h-5 w-5" aria-hidden="true" />
                     </div>
                     <input
                       id="search-field"

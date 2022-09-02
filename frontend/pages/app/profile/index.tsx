@@ -1,15 +1,15 @@
 import {
   CreditCardIcon,
-  LocationMarkerIcon,
+  MapPinIcon,
   UserGroupIcon,
-} from "@heroicons/react/outline";
+} from "@heroicons/react/24/outline";
 
 const navigation = [
   { name: "Conta e Usuários", href: "#", icon: UserGroupIcon, current: true },
   {
     name: "Pontos Georeferenciados",
     href: "#",
-    icon: LocationMarkerIcon,
+    icon: MapPinIcon,
     current: false,
   },
   {

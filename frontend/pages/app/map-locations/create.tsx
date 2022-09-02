@@ -1,5 +1,5 @@
 import { Dialog, RadioGroup, Transition } from "@headlessui/react";
-import { ChevronDoubleLeftIcon, XIcon } from "@heroicons/react/outline";
+import { ChevronDoubleLeftIcon, Bars3Icon } from "@heroicons/react/24/outline";
 import {
   Fragment,
   useCallback,
@@ -271,7 +271,7 @@ export function CreateMapLocation() {
                                 onClick={() => setOpen(false)}
                               >
                                 <span className="sr-only">Close panel</span>
-                                <XIcon className="h-6 w-6" aria-hidden="true" />
+                                <Bars3Icon className="h-6 w-6" aria-hidden="true" />
                               </button>
                             </div>
                           </div>

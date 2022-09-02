@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { CheckIcon, SelectorIcon } from "@heroicons/react/solid";
+import { CheckIcon, ChevronDownIcon } from "@heroicons/react/24/solid";
 import { Combobox } from "@headlessui/react";
 
 function classNames(...classes: (string | boolean)[]) {
@@ -32,8 +32,8 @@ export default function ComboBox({
     query === ""
       ? options
       : options.filter((option) => {
-          return option.title.toLowerCase().includes(query.toLowerCase());
-        });
+        return option.title.toLowerCase().includes(query.toLowerCase());
+      });
 
   function handleSelect(option: ComboBoxOption) {
     setSelected(option);
@@ -53,7 +53,7 @@ export default function ComboBox({
           placeholder={placeholder}
         />
         <Combobox.Button className="absolute inset-y-0 right-0 flex items-center rounded-r-md px-2 focus:outline-none">
-          <SelectorIcon className="h-5 w-5 text-gray-400" aria-hidden="true" />
+          <ChevronDownIcon className="h-5 w-5 text-gray-400" aria-hidden="true" />
         </Combobox.Button>
 
         {filteredPeople.length > 0 && (

@@ -2,7 +2,7 @@ import Cleave from "cleave.js/react";
 import { Pagination } from "../../../components";
 import Alert from "../../../components/alert/alert";
 import { DataTableHeader } from "../../../components/data-table";
-import useGet from "../../../hooks/useGet";
+import { useGet } from "../../../hooks/useGet";
 import { Driver } from "../../../services/types/Driver";
 
 export function Drivers() {

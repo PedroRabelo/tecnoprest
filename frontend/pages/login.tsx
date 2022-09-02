@@ -1,4 +1,3 @@
-import { LockClosedIcon } from "@heroicons/react/solid";
 import { yupResolver } from "@hookform/resolvers/yup";
 import Image from "next/image";
 import { useContext, useState } from "react";

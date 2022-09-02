@@ -1,9 +1,9 @@
 import { Combobox } from "@headlessui/react";
-import { CheckIcon, SelectorIcon } from "@heroicons/react/outline";
+import { CheckIcon } from "@heroicons/react/24/outline";
 import { Dispatch, SetStateAction } from "react";
 import usePlacesAutocomplete, {
   getGeocode,
-  getLatLng,
+  getLatLng
 } from "use-places-autocomplete";
 
 type Props = {

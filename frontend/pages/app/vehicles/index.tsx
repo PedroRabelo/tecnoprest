@@ -1,8 +1,8 @@
 import {
-  PencilAltIcon,
-  StatusOnlineIcon,
+  PencilIcon,
+  WifiIcon,
   TrashIcon,
-} from "@heroicons/react/outline";
+} from "@heroicons/react/24/outline";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
@@ -107,13 +107,13 @@ export function Vehicles() {
                               <div className="flex justify-end gap-4">
                                 <DataTableActions
                                   href="#"
-                                  Icon={PencilAltIcon}
+                                  Icon={PencilIcon}
                                   color="primary"
                                   title="Editar"
                                 />
                                 <DataTableActions
                                   href={`/app/vehicles/${vehicle.id}/trackers`}
-                                  Icon={StatusOnlineIcon}
+                                  Icon={WifiIcon}
                                   color="primary"
                                   title="Rastreadores"
                                 />

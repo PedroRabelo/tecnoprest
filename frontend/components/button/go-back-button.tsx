@@ -1,4 +1,4 @@
-import { ArrowLeftIcon } from "@heroicons/react/outline";
+import { ArrowLeftIcon } from "@heroicons/react/24/outline";
 import { useRouter } from "next/router";
 
 export function GoBackButton() {

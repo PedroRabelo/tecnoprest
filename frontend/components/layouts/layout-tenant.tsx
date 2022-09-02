@@ -3,15 +3,15 @@ import {
   BellIcon,
   CogIcon,
   HomeIcon,
-  LocationMarkerIcon,
+  MapPinIcon,
   MapIcon,
-  MenuAlt2Icon,
-  OfficeBuildingIcon,
   TruckIcon,
   UserGroupIcon,
-  XIcon,
-} from "@heroicons/react/outline";
-import { SearchIcon } from "@heroicons/react/solid";
+  BuildingOfficeIcon,
+  XMarkIcon,
+  Bars3Icon
+} from "@heroicons/react/24/outline";
+import { MagnifyingGlassIcon } from "@heroicons/react/24/solid";
 import Image from "next/image";
 import { Fragment, useContext, useState } from "react";
 import { AuthContext, signOut } from "../../contexts/auth-context";
@@ -22,13 +22,13 @@ const navigation = [
   {
     name: "Cadastro",
     href: "/app/profile",
-    icon: OfficeBuildingIcon,
+    icon: BuildingOfficeIcon,
     current: false,
   },
   {
     name: "Locais Estratégicos",
     href: "/app/map-locations",
-    icon: LocationMarkerIcon,
+    icon: MapPinIcon,
     current: false,
   },
   { name: "Veículos", href: "/app/vehicles", icon: TruckIcon, current: false },
@@ -40,12 +40,18 @@ const navigation = [
   },
   { name: "Manutenção", href: "#", icon: CogIcon, current: false },
   {
+    name: "Entregas",
+    href: "/app/deliveries",
+    icon: TruckIcon,
+    current: false,
+  },
+  {
     name: "Controle de Rotas",
     href: "/app/routes-manage",
     icon: MapIcon,
     current: false,
   },
-  { name: "Rastreamento", href: "#", icon: LocationMarkerIcon, current: false },
+  { name: "Rastreamento", href: "#", icon: MapPinIcon, current: false },
 ];
 const userNavigation = [
   { name: "Perfil", href: "#" },
@@ -117,7 +123,7 @@ export function LayoutTenant({ children }: Props) {
                         onClick={() => setSidebarOpen(false)}
                       >
                         <span className="sr-only">Close sidebar</span>
-                        <XIcon
+                        <XMarkIcon
                           className="h-6 w-6 text-white"
                           aria-hidden="true"
                         />
@@ -189,7 +195,7 @@ export function LayoutTenant({ children }: Props) {
               onClick={() => setSidebarOpen(true)}
             >
               <span className="sr-only">Open sidebar</span>
-              <MenuAlt2Icon className="h-6 w-6" aria-hidden="true" />
+              <Bars3Icon className="h-6 w-6" aria-hidden="true" />
             </button>
             <div className="flex-1 px-4 flex justify-between">
               <div className="flex-1 flex">
@@ -199,7 +205,7 @@ export function LayoutTenant({ children }: Props) {
                   </label>
                   <div className="relative w-full text-gray-400 focus-within:text-gray-600">
                     <div className="absolute inset-y-0 left-0 flex items-center pointer-events-none">
-                      <SearchIcon className="h-5 w-5" aria-hidden="true" />
+                      <MagnifyingGlassIcon className="h-5 w-5" aria-hidden="true" />
                     </div>
                     <input
                       id="search-field"

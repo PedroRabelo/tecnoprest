@@ -286,7 +286,7 @@ export function CreateDriver() {
             </div>
           </div>
           <div className="flex justify-end gap-4 mt-5">
-            <Button title="Salvar" style="primary" type="submit" />
+            <Button title="Salvar" color="primary" type="submit" />
           </div>
         </div>
 
@@ -386,7 +386,7 @@ export function CreateDriver() {
             </div>
           </div>
           <div className="flex justify-end gap-4 mt-5">
-            <Button title="Salvar" style="primary" type="submit" />
+            <Button title="Salvar" color="primary" type="submit" />
           </div>
         </div>
       </form>
