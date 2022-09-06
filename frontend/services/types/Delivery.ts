@@ -3,5 +3,6 @@ export type Delivery = {
   startDate: Date;
   routeName: string;
   origin: string;
-  originLatLong: string[];
+  originLatitude: string;
+  originLongitude: string;
 };

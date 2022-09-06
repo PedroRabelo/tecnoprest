@@ -5,6 +5,7 @@ import { DetailedHTMLProps, InputHTMLAttributes } from "react";
 import {
   DeepMap,
   FieldError,
+  FieldValues,
   Path,
   RegisterOptions,
   UseFormRegister,
@@ -13,7 +14,7 @@ import { FormErrorMessage } from "../form";
 
 type InputSize = "medium" | "large";
 
-export type FormDateInputProps<TFormValues> = {
+export type FormDateInputProps<TFormValues extends FieldValues> = {
   id: string;
   name: Path<TFormValues>;
   size?: InputSize;

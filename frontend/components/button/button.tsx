@@ -15,9 +15,10 @@ export function Button({ ...props }: Props) {
     <button
       type={props.type}
       className={classNames(
-        props.color === "primary"
-          ? "focus:ring-indigo-500 text-white bg-indigo-600 hover:bg-indigo-700"
-          : "text-indigo-700 bg-indigo-100 hover:bg-indigo-200 focus:ring-indigo-500",
+        props.disabled ? "bg-indigo-600 text-white cursor-not-allowed" :
+          props.color === "primary"
+            ? "focus:ring-indigo-500 text-white bg-indigo-600 hover:bg-indigo-700"
+            : "text-indigo-700 bg-indigo-100 hover:bg-indigo-200 focus:ring-indigo-500",
         "inline-flex items-center px-4 py-2 border border-transparent text-base font-medium rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-offset-2"
       )}
       {...props}

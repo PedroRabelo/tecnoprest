@@ -5,6 +5,7 @@ import React, { DetailedHTMLProps, SelectHTMLAttributes } from "react";
 import {
   DeepMap,
   FieldError,
+  FieldValues,
   Path,
   RegisterOptions,
   UseFormRegister,
@@ -13,12 +14,12 @@ import { FormErrorMessage } from "../form";
 
 export type InputSize = "medium" | "large";
 
-export type FormSelectProps<TFormValues> = {
+export type FormSelectProps<TFormValues extends FieldValues> = {
   id: string;
   name: Path<TFormValues>;
   value?: "id" | "name";
   size?: InputSize;
-  options: { id: string; name: string }[];
+  options: { id: string; name: string; title?: string }[];
   className?: string;
   rules?: RegisterOptions;
   register?: UseFormRegister<TFormValues>;
@@ -75,7 +76,7 @@ export const SelectInput = <TFormValues extends Record<string, unknown>>({
               key={option.id}
               value={value === "id" ? option.id : option.name}
             >
-              {option.name}
+              {option.name ? option.name : option.title}
             </option>
           ))}
       </select>

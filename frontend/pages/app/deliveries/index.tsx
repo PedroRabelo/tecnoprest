@@ -1,5 +1,5 @@
 import { PencilIcon, TrashIcon } from "@heroicons/react/24/outline";
-import { formatRelative } from "date-fns";
+import { format, formatRelative } from "date-fns";
 import { ptBR } from 'date-fns/locale'
 import Alert from "../../../components/alert/alert";
 import { DataTableHeader } from "../../../components/data-table";
@@ -61,9 +61,9 @@ export function Deliveries() {
                           className={index % 2 === 0 ? undefined : "bg-gray-50"}
                         >
                           <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6">
-                            {formatRelative(
+                            {format(
                               new Date(delivery.startDate),
-                              new Date(),
+                              'dd/MM/yyyy',
                               { locale: ptBR }
                             )}
                           </td>

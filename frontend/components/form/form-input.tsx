@@ -4,6 +4,7 @@ import React from "react";
 import {
   DeepMap,
   FieldError,
+  FieldValues,
   Path,
   RegisterOptions,
   UseFormRegister,
@@ -12,7 +13,7 @@ import { FormErrorMessage } from "../form";
 import { Input, InputProps } from "../input";
 import classNames from "classnames";
 
-export type FormInputProps<TFormValues> = {
+export type FormInputProps<TFormValues extends FieldValues> = {
   name: Path<TFormValues>;
   rules?: RegisterOptions;
   register?: UseFormRegister<TFormValues>;
