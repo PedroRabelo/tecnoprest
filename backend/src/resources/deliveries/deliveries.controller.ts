@@ -25,7 +25,11 @@ export class DeliveriesController {
 
   @Post('upload-sheet')
   @UseInterceptors(FileInterceptor('file', { dest: '/tmp/' }))
-  async uploadDeliveriesSheet(@UploadedFile() file: Express.Multer.File) {
+  async uploadDeliveriesSheet(
+    @UploadedFile() file: Express.Multer.File,
+    @CurrentTenant() tenantId: string,
+    @Body() createDeliveryDto: CreateDeliveryDto,
+  ) {
     const readOpts = {
       cellText: false,
       cellDates: true,
@@ -46,7 +50,11 @@ export class DeliveriesController {
       jsonOpts,
     );
 
-    return this.deliveriesService.createDeliveryOrders(json);
+    return this.deliveriesService.createDeliveryOrders(
+      json,
+      createDeliveryDto,
+      tenantId,
+    );
   }
 
   @Post()

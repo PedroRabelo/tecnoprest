@@ -13,11 +13,15 @@ export class DeliveriesService {
     private readonly ordersService: OrdersService,
   ) {}
 
-  async createDeliveryOrders(orders: CreateOrderDto[]) {
+  async createDeliveryOrders(
+    orders: CreateOrderDto[],
+    createDeliveryDto: CreateDeliveryDto,
+    tenantId: string,
+  ) {
     const response = await this.ordersService.createOrders(orders);
 
     if (response === 201) {
-      // TODO Salvar os dados na tabela de delivery
+      await this.create(createDeliveryDto, tenantId);
     } else {
       new DatabaseError('Ocorreu um erro na comunicação com a api de rotas');
     }

@@ -10,7 +10,8 @@ export class DeliveryEntity implements Delivery {
   startDate: Date;
   routeName: string;
   origin: string;
-  originLatLong: string[];
+  originLatitude: string;
+  originLongitude: string;
 
   tenantId: string;
 

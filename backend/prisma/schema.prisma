@@ -222,10 +222,11 @@ model Delivery {
   updatedAt DateTime @updatedAt
   active    Boolean  @default(true)
 
-  startDate     DateTime
-  routeName     String
-  origin        String
-  originLatLong String[]
+  startDate       DateTime
+  routeName       String
+  origin          String
+  originLatitude  String
+  originLongitude String
 
   vehicle   VehicleTenant? @relation(fields: [vehicleId], references: [id])
   vehicleId String?

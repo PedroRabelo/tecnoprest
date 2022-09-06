@@ -1,8 +1,7 @@
-import { IsDateString, IsNotEmpty, IsString, MaxLength } from 'class-validator';
+import { IsNotEmpty, IsString, MaxLength } from 'class-validator';
 
 export class CreateDeliveryDto {
   @IsNotEmpty()
-  @IsDateString()
   startDate: Date;
 
   @IsNotEmpty()
@@ -16,5 +15,8 @@ export class CreateDeliveryDto {
   origin: string;
 
   @IsNotEmpty()
-  originLatLong: string[];
+  originLatitude: string;
+
+  @IsNotEmpty()
+  originLongitude: string;
 }
